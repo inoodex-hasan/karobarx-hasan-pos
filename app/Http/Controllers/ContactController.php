@@ -168,9 +168,9 @@ class ContactController extends Controller
                     $update_status_url = url('/contacts/update-status/' . $row->id);
 
                     $html = '<div class="btn-group">
-                    <button type="button" class="'.($use_viho ? 'btn btn-outline-primary btn-xs' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max').' dropdown-toggle"
+                    <button type="button" class="'.($use_viho ? 'btn btn-primary btn-xs d-inline-flex align-items-center justify-content-center' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max').' dropdown-toggle"
                         data-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false">'.
-                        ($use_viho ? '<i data-feather="more-vertical"></i>' : __('messages.actions').'<span class="caret"></span><span class="sr-only">Toggle Dropdown</span>').
+                        ($use_viho ? '<i class="fa fa-chevron-down" aria-hidden="true"></i>' : __('messages.actions').'<span class="caret"></span><span class="sr-only">Toggle Dropdown</span>').
                     '</button>
                     <ul class="dropdown-menu dropdown-menu-left" role="menu">';
 
@@ -400,9 +400,9 @@ class ContactController extends Controller
                     $update_status_url = url('/contacts/update-status/' . $row->id);
 
                     $html = '<div class="btn-group">
-                    <button type="button" class="'.($use_viho ? 'btn btn-outline-primary btn-xs' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max').' dropdown-toggle"
+                    <button type="button" class="'.($use_viho ? 'btn btn-primary btn-xs d-inline-flex align-items-center justify-content-center' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max').' dropdown-toggle"
                         data-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false">'.
-                        ($use_viho ? '<i data-feather="more-vertical"></i>' : __('messages.actions').'<span class="caret"></span><span class="sr-only">Toggle Dropdown</span>').
+                        ($use_viho ? '<i class="fa fa-chevron-down" aria-hidden="true"></i>' : __('messages.actions').'<span class="caret"></span><span class="sr-only">Toggle Dropdown</span>').
                     '</button>
                     <ul class="dropdown-menu dropdown-menu-left" role="menu">';
 

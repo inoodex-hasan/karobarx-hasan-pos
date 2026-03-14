@@ -249,7 +249,8 @@
     /* Home page gap fix */
     .viho-template-active .page-body {
         padding-top: 0 !important;
-        margin-top: 80px !important; /* Clears the header (approx 80px) */
+        margin-top: 80px !important;
+        /* Clears the header (approx 80px) */
     }
 
     .viho-template-active .page-body .container-fluid {
@@ -257,7 +258,8 @@
     }
 
     .viho-template-active .dashboard-default-sec {
-        padding-top: 20px !important; /* This is the "little gap" requested */
+        padding-top: 20px !important;
+        /* This is the "little gap" requested */
     }
 
     .viho-template-active .viho-dashboard .page-header {
@@ -325,7 +327,7 @@
     .viho-template-active .table {
         background: #fff;
         border-radius: 12px;
-        overflow: hidden;
+        /* Removed overflow: hidden to prevent dropdown clipping */
     }
 
     .viho-template-active .table>thead>tr>th,
@@ -415,15 +417,19 @@
         border: none !important;
         color: #ffffff !important;
     }
+
     .viho-template-active .profile-greeting.card .card-header,
     .viho-template-active .profile-greeting.card .card-body {
         background-color: transparent !important;
         color: #ffffff !important;
     }
+
     .viho-template-active .profile-greeting.card h3,
     .viho-template-active .profile-greeting.card p {
-        color: #ffffff !important; /* Force white text */
+        color: #ffffff !important;
+        /* Force white text */
     }
+
     .viho-template-active .profile-greeting.card .btn-light {
         background-color: #ffffff !important;
         color: #24695c !important;
@@ -433,19 +439,28 @@
 
     /* Font Awesome 5 to 4 mapping shims for DataTables buttons */
     .viho-template-active .fa-file-csv:before {
-        content: "\f1c3" !important; /* Map to fa-file-excel-o */
+        content: "\f1c3" !important;
+        /* Map to fa-file-excel-o */
     }
+
     .viho-template-active .fa-file-excel:before {
-        content: "\f1c3" !important; /* fa-file-excel-o */
+        content: "\f1c3" !important;
+        /* fa-file-excel-o */
     }
+
     .viho-template-active .fa-file-pdf:before {
-        content: "\f1c8" !important; /* fa-file-pdf-o */
+        content: "\f1c8" !important;
+        /* fa-file-pdf-o */
     }
+
     .viho-template-active .fa-file-import:before {
-        content: "\f090" !important; /* fa-arrow-circle-o-right */
+        content: "\f090" !important;
+        /* fa-arrow-circle-o-right */
     }
+
     .viho-template-active .fa-file-export:before {
-        content: "\f08b" !important; /* fa-arrow-circle-o-left */
+        content: "\f08b" !important;
+        /* fa-arrow-circle-o-left */
     }
 
     /* DataTables Buttons Styling */
@@ -595,4 +610,116 @@
     }
 
     /* Date */
+
+    /* Action Column Dropdown Styling */
+    .viho-template-active .btn-group .dropdown-toggle.tw-dw-btn-info,
+    .viho-template-active .btn-group.open .dropdown-toggle.tw-dw-btn-info,
+    .viho-template-active .btn-group.show .dropdown-toggle.tw-dw-btn-info,
+    .viho-template-active .btn-group .btn.btn-primary[data-toggle="dropdown"] {
+        background-color: #24695C !important;
+        background: #24695C !important;
+        border-color: #24695C !important;
+        color: #ffffff !important;
+        font-size: 0 !important;
+        /* Hide "Actions" text if present */
+        padding: 4px 8px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-width: 30px !important;
+        height: 28px !important;
+        border-radius: 4px !important;
+        opacity: 1 !important;
+        background-image: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Ensure icons inside these buttons are centered and white */
+    .viho-template-active .btn-group .dropdown-toggle.tw-dw-btn-info i,
+    .viho-template-active .btn-group .btn.btn-primary[data-toggle="dropdown"] i {
+        font-size: 14px !important;
+        color: #ffffff !important;
+        margin: 0 !important;
+    }
+
+    .viho-template-active .btn-group .dropdown-toggle.tw-dw-btn-info .caret,
+    .viho-template-active .btn-group.open .dropdown-toggle.tw-dw-btn-info .caret,
+    .viho-template-active .btn-group.show .dropdown-toggle.tw-dw-btn-info .caret {
+        border-top-color: #ffffff !important;
+        border-bottom-color: #ffffff !important;
+        margin-left: 0 !important;
+        font-size: 16px !important;
+        display: inline-block !important;
+        vertical-align: middle !important;
+    }
+
+    /* Force compact solid white background for the dropdown menu - NUCLEAR FIX */
+    .viho-template-active .dropdown-menu,
+    .viho-template-active .btn-group.open .dropdown-menu,
+    .viho-template-active .btn-group.show .dropdown-menu,
+    .viho-template-active .dropdown-menu.show {
+        background-color: #ffffff !important;
+        background: #ffffff !important;
+        border: 1px solid #d1d5db !important;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
+        padding: 2px 0 !important;
+        /* Reduced vertical padding for menu */
+        z-index: 100000 !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        min-width: 140px !important;
+        transition: none !important;
+        animation: none !important;
+        filter: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        mix-blend-mode: normal !important;
+    }
+
+    .viho-template-active .btn-group.open .dropdown-menu,
+    .viho-template-active .btn-group.show .dropdown-menu,
+    .viho-template-active .dropdown-menu.show {
+        display: block !important;
+    }
+
+    .viho-template-active .dropdown-menu li,
+    .viho-template-active .dropdown-menu li a {
+        background-color: #ffffff !important;
+        background: #ffffff !important;
+        color: #2c323f !important;
+        padding: 4px 12px !important;
+        /* More compact padding */
+        display: block !important;
+        font-size: 11.5px !important;
+        /* Slightly smaller font for compactness */
+        opacity: 1 !important;
+        text-decoration: none !important;
+        line-height: 1.3 !important;
+        filter: none !important;
+    }
+
+    .viho-template-active .dropdown-menu li a:hover {
+        background-color: #f5f6fb !important;
+        color: #24695C !important;
+    }
+
+    .viho-template-active .dropdown-menu .divider {
+        background-color: #eef0f6 !important;
+        margin: 2px 0 !important;
+        /* More compact divider */
+    }
+
+    /* Ensure table containers don't clip dropdowns */
+    .viho-template-active .dataTables_wrapper,
+    .viho-template-active .table-responsive,
+    .viho-template-active .dataTable,
+    .viho-template-active div.dataTables_scrollBody,
+    .viho-template-active .tab-content,
+    .viho-template-active .tab-pane {
+        overflow: visible !important;
+    }
+
+    .viho-template-active .dt-buttons {
+        margin-bottom: 10px !important;
+    }
 </style>

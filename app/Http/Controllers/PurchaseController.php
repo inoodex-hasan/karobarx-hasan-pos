@@ -124,7 +124,7 @@ class PurchaseController extends Controller
                     if ($is_ai_template) {
                         // Viho: show only one dropdown arrow icon (no "Actions" text, no extra caret).
                         $html = '<div class="btn-group">
-                            <button type="button" class="btn btn-primary btn-s d-inline-flex align-items-center justify-content-center"
+                            <button type="button" class="btn btn-primary btn-xs d-inline-flex align-items-center justify-content-center"
                                 data-toggle="dropdown" aria-expanded="false" title="'.e(__('messages.actions')).'">
                                 <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                 <span class="sr-only">'.e(__('messages.actions')).'</span>

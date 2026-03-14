@@ -202,8 +202,20 @@ class ProductController extends Controller
                 ->addColumn(
                     'action',
                     function ($row) use ($selling_price_group_count) {
-                        $html =
-                        '<div class="btn-group"><button type="button" class="tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'.__('messages.actions').'<span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button><ul class="dropdown-menu dropdown-menu-left" role="menu"><li><a href="'.action([\App\Http\Controllers\LabelsController::class, 'show']).'?product_id='.$row->id.'" data-toggle="tooltip" title="'.__('lang_v1.label_help').'"><i class="fa fa-barcode"></i> '.__('barcode.labels').'</a></li>';
+                        $is_ai_template = $this->isAiTemplateRequest() || request()->is('ai-template/*');
+                        
+                        if ($is_ai_template) {
+                            $html = '<div class="btn-group">
+                                <button type="button" class="btn btn-primary btn-xs d-inline-flex align-items-center justify-content-center"
+                                    data-toggle="dropdown" aria-expanded="false" title="'.e(__('messages.actions')).'">
+                                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                    <span class="sr-only">'.e(__('messages.actions')).'</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-left" role="menu"><li><a href="'.action([\App\Http\Controllers\LabelsController::class, 'show']).'?product_id='.$row->id.'" data-toggle="tooltip" title="'.__('lang_v1.label_help').'"><i class="fa fa-barcode"></i> '.__('barcode.labels').'</a></li>';
+                        } else {
+                            $html =
+                            '<div class="btn-group"><button type="button" class="tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'.__('messages.actions').'<span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button><ul class="dropdown-menu dropdown-menu-left" role="menu"><li><a href="'.action([\App\Http\Controllers\LabelsController::class, 'show']).'?product_id='.$row->id.'" data-toggle="tooltip" title="'.__('lang_v1.label_help').'"><i class="fa fa-barcode"></i> '.__('barcode.labels').'</a></li>';
+                        }
 
                         if (auth()->user()->can('product.view')) {
                             $html .=

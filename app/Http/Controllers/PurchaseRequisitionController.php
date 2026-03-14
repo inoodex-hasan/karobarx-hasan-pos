@@ -49,6 +49,17 @@ class PurchaseRequisitionController extends Controller
     }
 
     /**
+     * Check if request is for Viho template
+     */
+    protected function isAiTemplateRequest()
+    {
+        $business = session('business');
+        $common_settings = !empty($business->common_settings) ? $business->common_settings : [];
+        $layout_template = !empty($common_settings['layout_template']) ? $common_settings['layout_template'] : 'default';
+        return $layout_template === 'viho';
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -117,13 +128,15 @@ class PurchaseRequisitionController extends Controller
                 $purchase_requisitions->where('transactions.status', '!=', 'completed');
             }
 
+            $is_viho = $this->isAiTemplateRequest();
+
             return Datatables::of($purchase_requisitions)
-                ->addColumn('action', function ($row) {
+                ->addColumn('action', function ($row) use ($is_viho) {
                     $html = '<div class="btn-group">
-                            <button type="button" class="tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max  dropdown-toggle" 
+                            <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max  dropdown-toggle').'" 
                                 data-toggle="dropdown" aria-expanded="false">'.
-                                __('messages.actions').
-                                '<span class="caret"></span><span class="sr-only">Toggle Dropdown
+                                ($is_viho ? '' : __('messages.actions')).
+                                '<span class="'.($is_viho ? 'fa fa-chevron-down' : 'caret').'"></span><span class="sr-only">Toggle Dropdown
                                 </span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-left" role="menu">';

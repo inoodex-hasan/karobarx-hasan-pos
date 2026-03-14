@@ -26,7 +26,6 @@
         .viho-template-active #product_table td *,
         .viho-template-active #product_table th * {
             color: #2c323f !important;
-            background-color: transparent !important;
         }
 
         .viho-template-active #product_table td {

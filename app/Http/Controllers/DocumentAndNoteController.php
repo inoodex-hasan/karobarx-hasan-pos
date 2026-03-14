@@ -28,6 +28,17 @@ class DocumentAndNoteController extends Controller
     }
 
     /**
+     * Check if request is for Viho template
+     */
+    protected function isAiTemplateRequest()
+    {
+        $business = session('business');
+        $common_settings = !empty($business->common_settings) ? $business->common_settings : [];
+        $layout_template = !empty($common_settings['layout_template']) ? $common_settings['layout_template'] : 'default';
+        return $layout_template === 'viho';
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -58,12 +69,13 @@ class DocumentAndNoteController extends Controller
             $permissions = $this->__getPermission($business_id, $notable_id, $notable_type);
 
             if (! empty($permissions) && in_array('view', $permissions)) {
+                $is_viho = $this->isAiTemplateRequest();
                 return Datatables::of($document_note)
-                    ->addColumn('action', function ($row) use ($notable_type, $permissions) {
+                    ->addColumn('action', function ($row) use ($notable_type, $permissions, $is_viho) {
                         $html = '<div class="btn-group">
-                                    <button class="tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline tw-dw-btn-info tw-w-max dropdown-toggle" type="button"  data-toggle="dropdown" aria-expanded="false">
-                                        '.__('messages.action').'
-                                        <span class="caret"></span>
+                                    <button class="'.($is_viho ? 'btn btn-primary btn-xs' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline tw-dw-btn-info tw-w-max').' dropdown-toggle" type="button"  data-toggle="dropdown" aria-expanded="false">
+                                        '.($is_viho ? '' : __('messages.action')).'
+                                        <span class="'.($is_viho ? 'fa fa-chevron-down' : 'caret').'"></span>
                                         <span class="sr-only">
                                             '.__('messages.action').'
                                         </span>

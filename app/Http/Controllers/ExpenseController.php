@@ -195,32 +195,43 @@ class ExpenseController extends Controller
             return Datatables::of($expenses)
                 ->addColumn(
                     'action',
-                    '<div class="btn-group">
-                        <button type="button" class="tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max dropdown-toggle" 
-                            data-toggle="dropdown" aria-expanded="false"> @lang("messages.actions")<span class="caret"></span><span class="sr-only">Toggle Dropdown
+                    function ($row) {
+                        $is_viho = $this->isAiTemplateRequest();
+                        $html = '<div class="btn-group">
+                            <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max').' dropdown-toggle" 
+                                data-toggle="dropdown" aria-expanded="false">'.
+                                ($is_viho ? '' : __('messages.actions')) .
+                                '<span class="'.($is_viho ? 'fa fa-chevron-down' : 'caret').'"></span><span class="sr-only">Toggle Dropdown
                                 </span>
-                        </button>
-                    <ul class="dropdown-menu dropdown-menu-left" role="menu">
-                    @if(auth()->user()->can("expense.edit"))
-                        <li><a href="{{action(\'App\Http\Controllers\ExpenseController@edit\', [$id])}}"><i class="glyphicon glyphicon-edit"></i> @lang("messages.edit")</a></li>
-                    @endif
-                    @if($document)
-                        <li><a href="{{ url(\'uploads/documents/\' . $document)}}" 
-                        download=""><i class="fa fa-download" aria-hidden="true"></i> @lang("purchase.download_document")</a></li>
-                        @if(isFileImage($document))
-                            <li><a href="#" data-href="{{ url(\'uploads/documents/\' . $document)}}" class="view_uploaded_document"><i class="fas fa-file-image" aria-hidden="true"></i>@lang("lang_v1.view_document")</a></li>
-                        @endif
-                    @endif
-                    @if(auth()->user()->can("expense.delete"))
-                        <li>
-                        <a href="#" data-href="{{action(\'App\Http\Controllers\ExpenseController@destroy\', [$id])}}" class="delete_expense"><i class="glyphicon glyphicon-trash"></i> @lang("messages.delete")</a></li>
-                    @endif
-                    <li class="divider"></li> 
-                    @if($payment_status != "paid")
-                        <li><a href="{{action([\App\Http\Controllers\TransactionPaymentController::class, \'addPayment\'], [$id])}}" class="add_payment_modal"><i class="fas fa-money-bill-alt" aria-hidden="true"></i> @lang("purchase.add_payment")</a></li>
-                    @endif
-                    <li><a href="{{action([\App\Http\Controllers\TransactionPaymentController::class, \'show\'], [$id])}}" class="view_payment_modal"><i class="fas fa-money-bill-alt" aria-hidden="true" ></i> @lang("purchase.view_payments")</a></li>
-                    </ul></div>'
+                            </button>
+                        <ul class="dropdown-menu dropdown-menu-left" role="menu">';
+
+                        if (auth()->user()->can("expense.edit")) {
+                            $html .= '<li><a href="' . action([\App\Http\Controllers\ExpenseController::class, 'edit'], [$row->id]) . '"><i class="glyphicon glyphicon-edit"></i>' . __('messages.edit') . '</a></li>';
+                        }
+                        
+                        if ($row->document) {
+                            $html .= '<li><a href="' . url('uploads/documents/' . $row->document) . '" download=""><i class="fa fa-download" aria-hidden="true"></i>' . __('purchase.download_document') . '</a></li>';
+                            if (isFileImage($row->document)) {
+                                $html .= '<li><a href="#" data-href="' . url('uploads/documents/' . $row->document) . '" class="view_uploaded_document"><i class="fas fa-file-image" aria-hidden="true"></i>' . __('lang_v1.view_document') . '</a></li>';
+                            }
+                        }
+
+                        if (auth()->user()->can("expense.delete")) {
+                            $html .= '<li><a href="#" data-href="' . action([\App\Http\Controllers\ExpenseController::class, 'destroy'], [$row->id]) . '" class="delete_expense"><i class="glyphicon glyphicon-trash"></i>' . __('messages.delete') . '</a></li>';
+                        }
+
+                        $html .= '<li class="divider"></li>';
+
+                        if ($row->payment_status != "paid") {
+                            $html .= '<li><a href="' . action([\App\Http\Controllers\TransactionPaymentController::class, 'addPayment'], [$row->id]) . '" class="add_payment_modal"><i class="fas fa-money-bill-alt" aria-hidden="true"></i>' . __('purchase.add_payment') . '</a></li>';
+                        }
+
+                        $html .= '<li><a href="' . action([\App\Http\Controllers\TransactionPaymentController::class, 'show'], [$row->id]) . '" class="view_payment_modal"><i class="fas fa-money-bill-alt" aria-hidden="true" ></i>' . __('purchase.view_payments') . '</a></li>';
+                        $html .= '</ul></div>';
+
+                        return $html;
+                    }
                 )
                 ->removeColumn('id')
                 ->editColumn(

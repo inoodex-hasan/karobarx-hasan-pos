@@ -242,10 +242,10 @@ class SellController extends Controller
                         if ($is_zatca) {
                             if ($row->zatca_status == 'success') {
                                 return '<div class="btn-group">
-                                <button type="button" class="tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline tw-dw-btn-info tw-w-max dropdown-toggle"
+                                <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline tw-dw-btn-info tw-w-max').' dropdown-toggle"
                                     data-toggle="dropdown" aria-expanded="false">' .
-                                    __('messages.actions') .
-                                    '<span class="caret"></span><span class="sr-only">Toggle Dropdown</span>
+                                    ($is_viho ? '' : __('messages.actions')) .
+                                    '<span class="'.($is_viho ? 'fa fa-chevron-down' : 'caret').'"></span><span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-left" role="menu">
                                     <li><a class="download-xml" href="'.action([\Modules\ZatcaIntegrationKsa\Http\Controllers\ZatcaInvoiceController::class, 'downloadXml'], [$row->id]).'">
@@ -264,11 +264,12 @@ class SellController extends Controller
 
 
                         }
+                        $is_viho = $this->isAiTemplateRequest();
                         $html = '<div class="btn-group">
-                                    <button type="button" class="tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max dropdown-toggle"
+                                    <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max').' dropdown-toggle"
                                         data-toggle="dropdown" aria-expanded="false">' .
-                        __('messages.actions') .
-                            '<span class="caret"></span><span class="sr-only">Toggle Dropdown
+                                        ($is_viho ? '' : __('messages.actions')) .
+                                        '<span class="'.($is_viho ? 'fa fa-chevron-down' : 'caret').'"></span><span class="sr-only">Toggle Dropdown
                                         </span>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-left" role="menu">';
