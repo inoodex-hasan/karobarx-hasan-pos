@@ -160,18 +160,18 @@ class ContactController extends Controller
             ->addColumn(
                 'action',
                 function ($row) {
-                    $use_viho = request()->is('ai-template/*');
-                    $route_prefix = $use_viho ? 'ai-template.' : '';
+                    $is_viho = $this->isAiTemplateRequest() || request()->is('ai-template/*');
+                    $route_prefix = $is_viho ? 'ai-template.' : '';
                     $show_url = route($route_prefix . 'contacts.show', [$row->id]);
                     $edit_url = route($route_prefix . 'contacts.edit', [$row->id]);
                     $delete_url = route($route_prefix . 'contacts.destroy', [$row->id]);
                     $update_status_url = url('/contacts/update-status/' . $row->id);
 
                     $html = '<div class="btn-group">
-                    <button type="button" class="'.($use_viho ? 'btn btn-primary btn-xs d-inline-flex align-items-center justify-content-center' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max').' dropdown-toggle"
-                        data-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false">'.
-                        ($use_viho ? '<i class="fa fa-chevron-down" aria-hidden="true"></i>' : __('messages.actions').'<span class="caret"></span><span class="sr-only">Toggle Dropdown</span>').
-                    '</button>
+                    <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs d-inline-flex align-items-center justify-content-center' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max dropdown-toggle').'"
+                        data-toggle="dropdown" aria-expanded="false">'.
+                        ($is_viho ? '<i class="fa fa-chevron-down" aria-hidden="true"></i>' : __('messages.actions').'<span class="caret"></span>').'
+                    </button>
                     <ul class="dropdown-menu dropdown-menu-left" role="menu">';
 
                     $html .= '<li><a href="'.action([\App\Http\Controllers\TransactionPaymentController::class, 'getPayContactDue'], [$row->id]).'?type=purchase" class="pay_purchase_due"><i class="fas fa-money-bill-alt" aria-hidden="true"></i>'.__('lang_v1.pay').'</a></li>';
@@ -392,7 +392,7 @@ class ContactController extends Controller
             ->addColumn(
                 'action',
                 function ($row) {
-                    $use_viho = request()->is('ai-template/*');
+                    $is_viho = $this->isAiTemplateRequest() || request()->is('ai-template/*');
                     $route_prefix = $use_viho ? 'ai-template.' : '';
                     $show_url = route($route_prefix . 'contacts.show', [$row->id]);
                     $edit_url = route($route_prefix . 'contacts.edit', [$row->id]);
@@ -400,10 +400,10 @@ class ContactController extends Controller
                     $update_status_url = url('/contacts/update-status/' . $row->id);
 
                     $html = '<div class="btn-group">
-                    <button type="button" class="'.($use_viho ? 'btn btn-primary btn-xs d-inline-flex align-items-center justify-content-center' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max').' dropdown-toggle"
-                        data-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false">'.
-                        ($use_viho ? '<i class="fa fa-chevron-down" aria-hidden="true"></i>' : __('messages.actions').'<span class="caret"></span><span class="sr-only">Toggle Dropdown</span>').
-                    '</button>
+                    <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs d-inline-flex align-items-center justify-content-center' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max dropdown-toggle').'"
+                        data-toggle="dropdown" aria-expanded="false">'.
+                        ($is_viho ? '<i class="fa fa-chevron-down" aria-hidden="true"></i>' : __('messages.actions').'<span class="caret"></span>').'
+                    </button>
                     <ul class="dropdown-menu dropdown-menu-left" role="menu">';
 
                     $html .= '<li><a href="'.action([\App\Http\Controllers\TransactionPaymentController::class, 'getPayContactDue'], [$row->id]).'?type=sell" class="pay_sale_due"><i class="fas fa-money-bill-alt" aria-hidden="true"></i>'.__('lang_v1.pay').'</a></li>';

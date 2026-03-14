@@ -159,15 +159,15 @@ class PurchaseOrderController extends Controller
                 $purchase_orders->where('transactions.shipping_status', request()->input('shipping_status'));
             }
 
-            $is_viho = $this->isAiTemplateRequest();
+            $is_viho = $this->isAiTemplateRequest() || request()->is('ai-template/*');
 
             return Datatables::of($purchase_orders)
                 ->addColumn('action', function ($row) use ($is_admin, $is_viho) {
                     $html = '<div class="btn-group">
-                            <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max').' dropdown-toggle" 
+                            <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs d-inline-flex align-items-center justify-content-center' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max dropdown-toggle').'" 
                                 data-toggle="dropdown" aria-expanded="false">'.
-                                ($is_viho ? '' : __('messages.actions')).
-                                '<span class="'.($is_viho ? 'fa fa-chevron-down' : 'caret').'"></span><span class="sr-only">Toggle Dropdown
+                                ($is_viho ? '<i class="fa fa-chevron-down" aria-hidden="true"></i>' : __('messages.actions') . '<span class="caret"></span>').'
+                                <span class="sr-only">Toggle Dropdown
                                 </span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-left" role="menu">';

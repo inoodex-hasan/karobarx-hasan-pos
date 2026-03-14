@@ -119,18 +119,18 @@ class PurchaseReturnController extends Controller
 
             return Datatables::of($purchases_returns)
                 ->addColumn('action', function ($row) {
-                    $is_ai_template = request()->is('ai-template/*');
-                    $edit_url = $is_ai_template
+                    $is_viho = request()->is('ai-template/*') || (method_exists($this, 'isAiTemplateRequest') && $this->isAiTemplateRequest());
+                    $edit_url = $is_viho
                         ? route('ai-template.purchase-return.add', [$row->return_parent_id ?: $row->id])
                         : action([\App\Http\Controllers\PurchaseReturnController::class, 'add'], $row->return_parent_id ?: $row->id);
-                    $delete_url = $is_ai_template
+                    $delete_url = $is_viho
                         ? route('ai-template.purchase-return.destroy', [$row->id])
                         : action([\App\Http\Controllers\PurchaseReturnController::class, 'destroy'], $row->id);
                     $html = '<div class="btn-group">
-                                    <button type="button" class="'.($is_ai_template ? 'btn btn-primary btn-xs' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max').' dropdown-toggle" 
+                                    <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs d-inline-flex align-items-center justify-content-center' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max dropdown-toggle').'" 
                                         data-toggle="dropdown" aria-expanded="false">'.
-                                        ($is_ai_template ? '' : __('messages.actions')).
-                                        '<span class="'.($is_ai_template ? 'fa fa-chevron-down' : 'caret').'"></span><span class="sr-only">Toggle Dropdown
+                                        ($is_viho ? '<i class="fa fa-chevron-down" aria-hidden="true"></i>' : __('messages.actions') . '<span class="caret"></span>').'
+                                        <span class="sr-only">Toggle Dropdown
                                         </span>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-right" role="menu">';

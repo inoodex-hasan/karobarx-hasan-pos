@@ -170,6 +170,7 @@
             });
 
             sell_table = $('#sell_table').DataTable({
+                destroy: true,
                 processing: true,
                 serverSide: true,
                 fixedHeader:false,
