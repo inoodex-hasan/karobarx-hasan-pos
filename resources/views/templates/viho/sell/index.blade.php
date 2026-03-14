@@ -2,6 +2,27 @@
 @section('title', __('lang_v1.all_sales'))
 
 @section('content')
+    <style>
+        /* Force horizontal scrollbar visibility on sells table */
+        #sell_table_wrapper,
+        #sell_table_wrapper .dataTables_scroll,
+        #sell_table_wrapper .dataTables_scrollBody {
+            display: block !important;
+            width: 100% !important;
+            overflow-x: auto !important;
+        }
+
+        #sell_table {
+            width: 100% !important;
+            margin: 0 !important;
+            display: table !important;
+        }
+
+        /* Ensure the DataTables scroll container allows the horizontal scrollbar to show */
+        .dataTables_wrapper .dataTables_scroll {
+            clear: both;
+        }
+    </style>
     <div class="container-fluid">
         <div class="page-header">
             <div class="row">
@@ -173,10 +194,12 @@
                 destroy: true,
                 processing: true,
                 serverSide: true,
-                fixedHeader:false,
+                fixedHeader: false,
                 aaSorting: [
                     [1, 'desc']
                 ],
+                scrollX: true,
+                scrollCollapse: true,
                 "ajax": {
                     "url": "{{ route('ai-template.sells.index') }}",
                     "data": function(d) {
@@ -216,9 +239,6 @@
                         d = __datatable_ajax_callback(d);
                     }
                 },
-                scrollY: "75vh",
-                scrollX: true,
-                scrollCollapse: true,
                 columns: [{
                         data: 'action',
                         name: 'action',
