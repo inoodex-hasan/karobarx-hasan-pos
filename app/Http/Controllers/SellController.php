@@ -237,15 +237,16 @@ class SellController extends Controller
                 ->addColumn(
                     'action',
                     function ($row) use ($only_shipments, $is_admin, $sale_type, $is_zatca) {
+                        $is_viho = $this->isAiTemplateRequest() || request()->is('ai-template/*');
 
                         // this action button for zatca module
                         if ($is_zatca) {
                             if ($row->zatca_status == 'success') {
                                 return '<div class="btn-group">
-                                <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline tw-dw-btn-info tw-w-max').' dropdown-toggle"
-                                    data-toggle="dropdown" aria-expanded="false">' .
-                                    ($is_viho ? '' : __('messages.actions')) .
-                                    '<span class="'.($is_viho ? 'fa fa-chevron-down' : 'caret').'"></span><span class="sr-only">Toggle Dropdown</span>
+                                <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs d-inline-flex align-items-center justify-content-center' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline tw-dw-btn-info tw-w-max dropdown-toggle').'"
+                                    data-toggle="dropdown" aria-expanded="false">'.
+                                    ($is_viho ? '<i class="fa fa-chevron-down" aria-hidden="true"></i>' : __('messages.actions') . '<span class="caret"></span>') .
+                                    '<span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-left" role="menu">
                                     <li><a class="download-xml" href="'.action([\Modules\ZatcaIntegrationKsa\Http\Controllers\ZatcaInvoiceController::class, 'downloadXml'], [$row->id]).'">
@@ -264,13 +265,12 @@ class SellController extends Controller
 
 
                         }
-                        $is_viho = $this->isAiTemplateRequest();
+
                         $html = '<div class="btn-group">
-                                    <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max').' dropdown-toggle"
-                                        data-toggle="dropdown" aria-expanded="false">' .
-                                        ($is_viho ? '' : __('messages.actions')) .
-                                        '<span class="'.($is_viho ? 'fa fa-chevron-down' : 'caret').'"></span><span class="sr-only">Toggle Dropdown
-                                        </span>
+                                    <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs d-inline-flex align-items-center justify-content-center' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max dropdown-toggle').'"
+                                        data-toggle="dropdown" aria-expanded="false">'.
+                                        ($is_viho ? '<i class="fa fa-chevron-down" aria-hidden="true"></i>' : __('messages.actions') . '<span class="caret"></span>') .
+                                        '<span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-left" role="menu">';
 
@@ -1291,12 +1291,12 @@ class SellController extends Controller
             return Datatables::of($sells)
                  ->addColumn(
                     'action', function ($row) {
+                        $is_viho = $this->isAiTemplateRequest() || request()->is('ai-template/*');
                         $html = '<div class="btn-group">
-                                <button type="button" class="tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max dropdown-toggle" 
+                                <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs d-inline-flex align-items-center justify-content-center' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max dropdown-toggle').'" 
                                     data-toggle="dropdown" aria-expanded="false">'.
-                                    __('messages.actions').
-                                    '<span class="caret"></span><span class="sr-only">Toggle Dropdown
-                                    </span>
+                                    ($is_viho ? '<i class="fa fa-chevron-down" aria-hidden="true"></i>' : __('messages.actions') . '<span class="caret"></span>') .
+                                    '<span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
                                     <li>

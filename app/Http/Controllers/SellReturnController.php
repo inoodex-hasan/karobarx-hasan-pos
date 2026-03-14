@@ -155,7 +155,7 @@ class SellReturnController extends Controller
 
             $sells->groupBy('transactions.id');
 
-           //for zatca module Retrieve the 'is_zatca' parameter from the request; default to 0 if not provided and only comes 1 from zatca module
+            //for zatca module Retrieve the 'is_zatca' parameter from the request; default to 0 if not provided and only comes 1 from zatca module
             $is_zatca = !empty(request()->input('is_zatca')) ? request()->input('is_zatca') : 0;
 
             if ($is_zatca) {
@@ -184,37 +184,34 @@ class SellReturnController extends Controller
                 ->addColumn(
                     'action',
                     function ($row) use ($is_zatca) {
-                        $is_viho = $this->isAiTemplateRequest();
+                        $is_viho = $this->isAiTemplateRequest() || request()->is('ai-template/*');
                         if ($is_zatca) {
                             if ($row->zatca_status == 'success') {
                                 return '<div class="btn-group">
-                                <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline tw-dw-btn-info tw-w-max dropdown-toggle').'"
+                                <button type="button" class="' . ($is_viho ? 'btn btn-primary btn-xs d-inline-flex align-items-center justify-content-center' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline tw-dw-btn-info tw-w-max dropdown-toggle') . '"
                                     data-toggle="dropdown" aria-expanded="false">' .
-                                    ($is_viho ? '' : __('messages.actions')) .
-                                    '<span class="'.($is_viho ? 'fa fa-chevron-down' : 'caret').'"></span><span class="sr-only">Toggle Dropdown</span>
+                                    ($is_viho ? '<i class="fa fa-chevron-down" aria-hidden="true"></i>' : __('messages.actions') . '<span class="caret"></span>') .
+                                    '<span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-left" role="menu">
                                     <li>
-                                        <a class="download-xml" href="'.action([\Modules\ZatcaIntegrationKsa\Http\Controllers\ZatcaInvoiceController::class, 'downloadXml'], [$row->id]).'">
-                                            <i class="fas fa-file-download"></i> '.__('zatcaintegrationksa::lang.download_xml').'
+                                        <a class="download-xml" href="' . action([\Modules\ZatcaIntegrationKsa\Http\Controllers\ZatcaInvoiceController::class, 'downloadXml'], [$row->id]) . '">
+                                            <i class="fas fa-file-download"></i> ' . __('zatcaintegrationksa::lang.download_xml') . '
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="download-a3-pdf" target="_blank"  href="'.action([\Modules\ZatcaIntegrationKsa\Http\Controllers\ZatcaInvoiceController::class, 'return_print_pdf'], [$row->id]).'">
-                                            <i class="fas fa-file-download"></i> '.__('zatcaintegrationksa::lang.download_a3_pdf').'
+                                        <a class="download-a3-pdf" target="_blank"  href="' . action([\Modules\ZatcaIntegrationKsa\Http\Controllers\ZatcaInvoiceController::class, 'return_print_pdf'], [$row->id]) . '">
+                                            <i class="fas fa-file-download"></i> ' . __('zatcaintegrationksa::lang.download_a3_pdf') . '
                                         </a>
                                     </li>
-                                </ul></div>';                            
-                            } else {
-                                return '<a href="' . action([\Modules\ZatcaIntegrationKsa\Http\Controllers\ZatcaInvoiceController::class, 'sync_sale_return'], [$row->id]) . '" class="tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline tw-dw-btn-info tw-w-max return_sale_sycs">' . __('zatcaintegrationksa::lang.sync') . '</a>';
+                                </ul></div>';
                             }
                         }
-            $returnString = '<div class="btn-group">
-                                <button type="button" class="'.($is_viho ? 'btn btn-primary btn-xs' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline tw-dw-btn-info tw-w-max').' dropdown-toggle"
-                                    data-toggle="dropdown" aria-expanded="false">' . 
-                                    ($is_viho ? '' : __('messages.actions')) . 
-                                    '<span class="'.($is_viho ? 'fa fa-chevron-down' : 'caret').'"></span>
-                                    <span class="sr-only">Toggle Dropdown</span>
+                        $returnString = '<div class="btn-group">
+                                <button type="button" class="' . ($is_viho ? 'btn btn-primary btn-xs d-inline-flex align-items-center justify-content-center' : 'tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline tw-dw-btn-info tw-w-max dropdown-toggle') . '"
+                                    data-toggle="dropdown" aria-expanded="false">' .
+                            ($is_viho ? '<i class="fa fa-chevron-down" aria-hidden="true"></i>' : __('messages.actions') . '<span class="caret"></span>') .
+                            '<span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
                                     <li>
@@ -238,15 +235,15 @@ class SellReturnController extends Controller
                                             <i class="fa fa-print" aria-hidden="true"></i> ' . __('messages.print') . '
                                         </a>
                                     </li>';
-                            if ($row->payment_status != "paid") {
-                    $returnString .= '<li>
+                        if ($row->payment_status != "paid") {
+                            $returnString .= '<li>
                                         <a href="' . action('App\Http\Controllers\TransactionPaymentController@addPayment', [$row->id]) . '" class="add_payment_modal">
                                             <i class="fas fa-money-bill-alt"></i> ' . __('purchase.add_payment') . '
                                         </a>
                                     </li>';
-                            }
+                        }
 
-                $returnString .= '<li>
+                        $returnString .= '<li>
                                     <a href="' . action('App\Http\Controllers\TransactionPaymentController@show', [$row->id]) . '" class="view_payment_modal">
                                         <i class="fas fa-money-bill-alt"></i> ' . __('purchase.view_payments') . '
                                     </a>
@@ -279,26 +276,26 @@ class SellReturnController extends Controller
                 })
                 ->editColumn('zatca_status', function ($row) use ($is_zatca) {
                     $status = '';
-                    if($is_zatca){
+                    if ($is_zatca) {
                         if (empty($row->zatca_status) || is_null($row->zatca_status)) {
-                            $status = '<small class="label bg-primary tw-dw-btn-xs no-print">'.__('zatcaintegrationksa::lang.pending').'</small>';
+                            $status = '<small class="label bg-primary tw-dw-btn-xs no-print">' . __('zatcaintegrationksa::lang.pending') . '</small>';
                         } elseif ($row->zatca_status == 'success') {
                             $status = '<small class="label bg-light-green tw-dw-btn-xs no-print">' . ucfirst($row->zatca_status) . '</small>';
                         } elseif ($row->zatca_status == 'failed') {
-                                $lastDoc = \Modules\ZatcaIntegrationKsa\Entities\ZatcaDocument::where('transaction_id', $row->id)
-                                    ->where('sent_to_zatca_status', 'failed')
-                                    ->orderBy('created_at', 'desc')
-                                    ->latest()
-                                    ->first();
+                            $lastDoc = \Modules\ZatcaIntegrationKsa\Entities\ZatcaDocument::where('transaction_id', $row->id)
+                                ->where('sent_to_zatca_status', 'failed')
+                                ->orderBy('created_at', 'desc')
+                                ->latest()
+                                ->first();
 
-                                if ($lastDoc && $lastDoc->response_source == 'self' && !empty($lastDoc->response)) {
-                                    $safeMsg = htmlspecialchars($lastDoc->response, ENT_QUOTES, 'UTF-8');
-                                    $status = '<small class="label bg-red tw-dw-btn-xs no-print mb-1">' . ucfirst($row->zatca_status) . '</small><br><span class="text-danger">' . $safeMsg . '</span>';
-                                } else if ($lastDoc) {
-                                    $label = '<small class="label bg-red tw-dw-btn-xs no-print mb-1">' . ucfirst($row->zatca_status) . '</small>';
-                                    $button = '<a href="' . action([\Modules\ZatcaIntegrationKsa\Http\Controllers\ZatcaInvoiceController::class, 'showInvoiceError'], ['id' => $row->id]) . '" class="btn btn-xs btn-danger no-print mt-2 status_fail" style="margin-top: 10px;">' . e(__('zatcaintegrationksa::lang.view_error')) . '</a>';
-                                    $status = $label . '<br>' . $button;
-                                }
+                            if ($lastDoc && $lastDoc->response_source == 'self' && !empty($lastDoc->response)) {
+                                $safeMsg = htmlspecialchars($lastDoc->response, ENT_QUOTES, 'UTF-8');
+                                $status = '<small class="label bg-red tw-dw-btn-xs no-print mb-1">' . ucfirst($row->zatca_status) . '</small><br><span class="text-danger">' . $safeMsg . '</span>';
+                            } else if ($lastDoc) {
+                                $label = '<small class="label bg-red tw-dw-btn-xs no-print mb-1">' . ucfirst($row->zatca_status) . '</small>';
+                                $button = '<a href="' . action([\Modules\ZatcaIntegrationKsa\Http\Controllers\ZatcaInvoiceController::class, 'showInvoiceError'], ['id' => $row->id]) . '" class="btn btn-xs btn-danger no-print mt-2 status_fail" style="margin-top: 10px;">' . e(__('zatcaintegrationksa::lang.view_error')) . '</a>';
+                                $status = $label . '<br>' . $button;
+                            }
                         }
                     }
                     return $status;
@@ -310,7 +307,8 @@ class SellReturnController extends Controller
                         } else {
                             return '';
                         }
-                    }])
+                    }
+                ])
                 ->rawColumns(['final_total', 'action', 'parent_sale', 'payment_status', 'payment_due', 'name', 'zatca_status'])
                 ->make(true);
         }
@@ -429,7 +427,8 @@ class SellReturnController extends Controller
 
                 DB::commit();
 
-                $output = ['success' => 1,
+                $output = [
+                    'success' => 1,
                     'msg' => __('lang_v1.success'),
                     'receipt' => $receipt,
                 ];
@@ -444,7 +443,8 @@ class SellReturnController extends Controller
                 $msg = __('messages.something_went_wrong');
             }
 
-            $output = ['success' => 0,
+            $output = [
+                'success' => 0,
                 'msg' => $msg,
             ];
         }
@@ -552,8 +552,10 @@ class SellReturnController extends Controller
                 }
                 $sell_return = $query->first();
 
-                $sell_lines = TransactionSellLine::where('transaction_id',
-                    $sell_return->return_parent_id)
+                $sell_lines = TransactionSellLine::where(
+                    'transaction_id',
+                    $sell_return->return_parent_id
+                )
                     ->get();
 
                 if (!empty($sell_return)) {
@@ -582,7 +584,8 @@ class SellReturnController extends Controller
                 }
 
                 DB::commit();
-                $output = ['success' => 1,
+                $output = [
+                    'success' => 1,
                     'msg' => __('lang_v1.success'),
                 ];
             } catch (\Exception $e) {
@@ -595,7 +598,8 @@ class SellReturnController extends Controller
                     $msg = __('messages.something_went_wrong');
                 }
 
-                $output = ['success' => 0,
+                $output = [
+                    'success' => 0,
                     'msg' => $msg,
                 ];
             }
@@ -619,7 +623,8 @@ class SellReturnController extends Controller
         $transaction_id,
         $printer_type = null
     ) {
-        $output = ['is_enabled' => false,
+        $output = [
+            'is_enabled' => false,
             'print_type' => 'browser',
             'html_content' => null,
             'printer_config' => [],
@@ -665,7 +670,8 @@ class SellReturnController extends Controller
     {
         if (request()->ajax()) {
             try {
-                $output = ['success' => 0,
+                $output = [
+                    'success' => 0,
                     'msg' => trans('messages.something_went_wrong'),
                 ];
 
@@ -685,7 +691,8 @@ class SellReturnController extends Controller
                     $output = ['success' => 1, 'receipt' => $receipt];
                 }
             } catch (\Exception $e) {
-                $output = ['success' => 0,
+                $output = [
+                    'success' => 0,
                     'msg' => trans('messages.something_went_wrong'),
                 ];
             }
@@ -700,7 +707,8 @@ class SellReturnController extends Controller
     public function validateInvoiceToReturn($invoice_no)
     {
         if (!auth()->user()->can('sell.create') && !auth()->user()->can('direct_sell.access') && !auth()->user()->can('view_own_sell_only')) {
-            return ['success' => 0,
+            return [
+                'success' => 0,
                 'msg' => trans('lang_v1.permission_denied'),
             ];
         }
@@ -721,12 +729,14 @@ class SellReturnController extends Controller
         $sell = $query->first();
 
         if (empty($sell)) {
-            return ['success' => 0,
+            return [
+                'success' => 0,
                 'msg' => trans('lang_v1.sell_not_found'),
             ];
         }
 
-        return ['success' => 1,
+        return [
+            'success' => 1,
             'redirect_url' => action([\App\Http\Controllers\SellReturnController::class, 'add'], [$sell->id]),
         ];
     }
