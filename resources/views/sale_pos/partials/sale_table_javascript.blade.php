@@ -19,12 +19,12 @@ $(document).on('change', '#sell_list_filter_location_id, #sell_list_filter_custo
 });
 
 sell_table = $('#sell_table').DataTable({
+        destroy: true,
         processing: true,
         serverSide: true,
         fixedHeader:false,
-        fixedHeader:false,
         aaSorting: [[1, 'desc']],
-        scrollY: "75vh",
+        scrollY: window.location.href.includes('ai-template') ? null : "75vh",
         scrollX:        true,
         scrollCollapse: true,
         "ajax": {

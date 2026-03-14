@@ -3,32 +3,30 @@
 
 @push('styles')
     <style>
-        /* Make DataTables controls match Viho users/roles layout */
-        #sell_table_wrapper {
-            width: 100% !important;
+        /* Force horizontal scrollbar visibility on POS table */
+        #sell_table_wrapper,
+        #sell_table_wrapper .dataTables_scroll,
+        #sell_table_wrapper .dataTables_scrollBody {
             display: block !important;
+            width: 100% !important;
+            overflow-x: auto !important;
         }
 
         #sell_table {
             width: 100% !important;
+            margin: 0 !important;
+            display: table !important;
         }
 
-        /* Ensure table rows display properly */
-        #sell_table tbody tr {
-            display: table-row !important;
+        /* Ensure the DataTables scroll container allows the horizontal scrollbar to show */
+        .dataTables_wrapper .dataTables_scroll {
+            clear: both;
         }
 
-        #sell_table tbody td {
-            display: table-cell !important;
-        }
-
-        /* Fix for DataTables rendering all in one row */
-        .dataTables_wrapper table.dataTable tbody tr {
-            display: table-row !important;
-        }
-
-        .dataTables_wrapper table.dataTable tbody td {
-            display: table-cell !important;
+        /* Standard Viho controls adjustment */
+        #sell_table_wrapper {
+            width: 100% !important;
+            display: block !important;
         }
     </style>
 @endpush
