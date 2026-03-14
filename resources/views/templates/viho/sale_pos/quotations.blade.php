@@ -4,31 +4,19 @@
 @push('styles')
     <style>
         /* Make DataTables controls match Viho users/roles layout */
-        #quotation_table_wrapper {
-            width: 100% !important;
+        /* Force horizontal scrollbar visibility on quotations table */
+        #quotation_table_wrapper,
+        #quotation_table_wrapper .dataTables_scroll,
+        #quotation_table_wrapper .dataTables_scrollBody {
             display: block !important;
+            width: 100% !important;
+            overflow-x: auto !important;
         }
 
         #quotation_table {
             width: 100% !important;
-        }
-
-        /* Ensure table rows display properly */
-        #quotation_table tbody tr {
-            display: table-row !important;
-        }
-
-        #quotation_table tbody td {
-            display: table-cell !important;
-        }
-
-        /* Fix for DataTables rendering all in one row */
-        .dataTables_wrapper table.dataTable tbody tr {
-            display: table-row !important;
-        }
-
-        .dataTables_wrapper table.dataTable tbody td {
-            display: table-cell !important;
+            margin: 0 !important;
+            display: table !important;
         }
     </style>
 @endpush
@@ -139,10 +127,14 @@
             }
 
             quotation_table = $('#quotation_table').DataTable({
+                destroy: true,
                 processing: true,
                 serverSide: true,
                 fixedHeader:false,
                 aaSorting: [[0, 'desc']],
+                scrollX: true,
+                scrollCollapse: true,
+                dom: "<'row align-items-center mb-3'<'col-sm-12 col-md-2'l><'col-sm-12 col-md-8 text-center'B><'col-sm-12 col-md-2 text-md-end'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 text-md-end'p>>",
                 "ajax": {
                     "url": '/sells/draft-dt?is_quotation=1',
                     "data": function ( d ) {

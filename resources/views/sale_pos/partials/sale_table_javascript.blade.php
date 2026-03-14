@@ -27,6 +27,7 @@ sell_table = $('#sell_table').DataTable({
         scrollY: window.location.href.includes('ai-template') ? null : "75vh",
         scrollX:        true,
         scrollCollapse: true,
+        dom: window.location.href.includes('ai-template') ? "<'row align-items-center mb-3'<'col-sm-12 col-md-2'l><'col-sm-12 col-md-8 text-center'B><'col-sm-12 col-md-2 text-md-end'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 text-md-end'p>>" : undefined,
         "ajax": {
             "url": "/sells",
             "data": function ( d ) {

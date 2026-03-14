@@ -200,6 +200,7 @@
                 ],
                 scrollX: true,
                 scrollCollapse: true,
+                dom: "<'row align-items-center mb-3'<'col-sm-12 col-md-2'l><'col-sm-12 col-md-8 text-center'B><'col-sm-12 col-md-2 text-md-end'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 text-md-end'p>>",
                 "ajax": {
                     "url": "{{ route('ai-template.sells.index') }}",
                     "data": function(d) {
