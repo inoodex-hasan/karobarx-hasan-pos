@@ -7,6 +7,27 @@
 @endphp
 
 @section('content')
+    <style>
+        /* Force horizontal scrollbar visibility on purchases table */
+        #purchase_table_wrapper,
+        #purchase_table_wrapper .dataTables_scroll,
+        #purchase_table_wrapper .dataTables_scrollBody {
+            display: block !important;
+            width: 100% !important;
+            overflow-x: auto !important;
+        }
+
+        #purchase_table {
+            width: 100% !important;
+            margin: 0 !important;
+            display: table !important;
+        }
+
+        /* Ensure the DataTables scroll container allows the horizontal scrollbar to show */
+        .dataTables_wrapper .dataTables_scroll {
+            clear: both;
+        }
+    </style>
     <!-- Content Header (Page header) -->
     <section class="content-header no-print">
         <div class="container-fluid">
@@ -168,10 +189,10 @@
             }
 
             purchase_table = $('#purchase_table').DataTable({
+                destroy: true,
                 processing: true,
                 serverSide: true,
                 fixedHeader: false,
-                scrollY: "75vh",
                 scrollX: true,
                 scrollCollapse: true,
                 pageLength: 25,
