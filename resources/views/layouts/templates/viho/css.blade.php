@@ -246,6 +246,20 @@
         background: transparent !important;
     }
 
+    /* Home page gap fix */
+    .viho-template-active .page-body {
+        padding-top: 0 !important;
+        margin-top: 80px !important; /* Clears the header (approx 80px) */
+    }
+
+    .viho-template-active .page-body .container-fluid {
+        padding-top: 0 !important;
+    }
+
+    .viho-template-active .dashboard-default-sec {
+        padding-top: 20px !important; /* This is the "little gap" requested */
+    }
+
     .viho-template-active .viho-dashboard .page-header {
         background: #ffffff;
         border: 1px solid #eef0f6;
@@ -391,6 +405,32 @@
         background-color: #ffffff !important;
     }
 
+    /* Profile Greeting visibility fix: Ensures text is visible even if image fails to load */
+    .viho-template-active .profile-greeting.card {
+        background-color: #24695c !important;
+        /* Primary Teal fallback */
+        background-image: url("{{ $template_asset('images/dashboard/bg.jpg') }}") !important;
+        background-size: cover !important;
+        background-position: center !important;
+        border: none !important;
+        color: #ffffff !important;
+    }
+    .viho-template-active .profile-greeting.card .card-header,
+    .viho-template-active .profile-greeting.card .card-body {
+        background-color: transparent !important;
+        color: #ffffff !important;
+    }
+    .viho-template-active .profile-greeting.card h3,
+    .viho-template-active .profile-greeting.card p {
+        color: #ffffff !important; /* Force white text */
+    }
+    .viho-template-active .profile-greeting.card .btn-light {
+        background-color: #ffffff !important;
+        color: #24695c !important;
+        border: none !important;
+        font-weight: 700 !important;
+    }
+
     /* DataTables Buttons Styling */
     .viho-template-active .dt-buttons {
         margin-bottom: 0 !important;
@@ -468,7 +508,7 @@
         margin-right: -5px !important;
     }
 
-    .viho-template-active .dataTables_wrapper .row.align-items-center > [class*="col-"] {
+    .viho-template-active .dataTables_wrapper .row.align-items-center>[class*="col-"] {
         padding-left: 5px !important;
         padding-right: 5px !important;
     }
@@ -519,6 +559,14 @@
     }
 
     /* Adjust specific column widths if needed */
-    .viho-template-active #sales_order_table th:nth-child(1) { width: 60px !important; } /* Action */
-    .viho-template-active #sales_order_table th:nth-child(2) { width: 80px !important; } /* Date */
+    .viho-template-active #sales_order_table th:nth-child(1) {
+        width: 60px !important;
+    }
+
+    /* Action */
+    .viho-template-active #sales_order_table th:nth-child(2) {
+        width: 80px !important;
+    }
+
+    /* Date */
 </style>

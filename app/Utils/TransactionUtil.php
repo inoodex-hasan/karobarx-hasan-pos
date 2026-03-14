@@ -5099,6 +5099,18 @@ class TransactionUtil extends Util
                 ->where('transactions.type', $sale_type);
 
         // If only counting, select minimal columns for better performance
+            // Pre-aggregate sell line totals per transaction and join once
+            $sells->leftJoinSub(
+                DB::table('transaction_sell_lines as tsl')
+                    ->selectRaw('tsl.transaction_id, COUNT(DISTINCT tsl.id) as total_items, SUM(tsl.quantity - tsl.so_quantity_invoiced) as so_qty_remaining')
+                    ->whereNull('tsl.parent_sell_line_id')
+                    ->groupBy('tsl.transaction_id'),
+                'tsl_agg',
+                function ($join) {
+                    $join->on('tsl_agg.transaction_id', '=', 'transactions.id');
+                }
+            );
+
         if ($only_count) {
             $sells->select('transactions.id');
         } else {
@@ -5118,17 +5130,6 @@ class TransactionUtil extends Util
                     'transactions.types_of_service_id',
                     '=',
                     'tos.id'
-                )
-                // Pre-aggregate sell line totals per transaction and join once
-                ->leftJoinSub(
-                    DB::table('transaction_sell_lines as tsl')
-                        ->selectRaw('tsl.transaction_id, COUNT(DISTINCT tsl.id) as total_items, SUM(tsl.quantity - tsl.so_quantity_invoiced) as so_qty_remaining')
-                        ->whereNull('tsl.parent_sell_line_id')
-                        ->groupBy('tsl.transaction_id'),
-                    'tsl_agg',
-                    function ($join) {
-                        $join->on('tsl_agg.transaction_id', '=', 'transactions.id');
-                    }
                 )
                 ->select(
                     'transactions.id',

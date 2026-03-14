@@ -372,7 +372,7 @@
 
                 @if (in_array('pos_sale', $enabled_modules))
                     @can('sell.create')
-                        <a href="{{ action([\App\Http\Controllers\SellPosController::class, 'create']) }}"
+                        <a href="{{ route('pos.create') }}"
                             class="tw-inline-flex tw-transition-all tw-duration-200 tw-gap-2 tw-bg-{{ $theme_color }}-800 hover:tw-bg-{{ $theme_color }}-700 tw-py-1.5 tw-px-3 tw-rounded-lg tw-items-center tw-justify-center tw-text-sm tw-font-medium tw-ring-1 tw-ring-white/10 hover:tw-text-white tw-text-white"
                             title="@lang('sale.pos_sale')">
                             <svg aria-hidden="true" class="tw-size-5"

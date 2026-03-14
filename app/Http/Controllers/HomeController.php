@@ -142,6 +142,9 @@ class HomeController extends Controller
                     1
                 );
 
+                // Personalize the greeting card
+                $dashboard_body = str_replace('Wellcome Back, John!!', 'Welcome Back, ' . (auth()->user()->first_name ?? 'User') . '!', $dashboard_body);
+
                 // Sales Overview: make the total amount and percentage updatable
                 $dashboard_body = preg_replace(
                     '/<h5>\s*Sales\s+overview\s*<\/h5>\s*<div class="center-content">\s*<p[^>]*>\s*<span class="font-primary m-r-10 f-w-700">([^<]*)<\/span>\s*<i class="toprightarrow-primary fa fa-arrow-up m-r-10"><\/i>\s*([^<]*)%\s*More\s+than\s+last\s+year\s*<\/p>/i',

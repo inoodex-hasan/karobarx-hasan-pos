@@ -232,6 +232,65 @@
             font-style: normal;
         }
 
+        /* Laptop Responsiveness Fixes (1024px to 1440px) */
+        @media (max-width: 1440px) {
+            .viho-template-active .page-wrapper.compact-wrapper .page-body-wrapper header.main-nav {
+                width: 240px !important;
+                min-width: 240px !important;
+            }
+            .viho-template-active .page-wrapper.compact-wrapper .page-body-wrapper .page-body {
+                margin-left: 240px !important;
+            }
+            .viho-template-active .page-main-header .main-header-right .main-header-left {
+                width: 240px !important;
+            }
+            .viho-template-active .page-main-header .main-header-right .nav-right {
+                padding-left: 10px !important;
+            }
+            .viho-template-active .default-header-embedded a.tw-inline-flex {
+                padding: 0.375rem 0.5rem !important;
+                font-size: 0.75rem !important;
+            }
+            .viho-template-active .default-header-embedded svg {
+                width: 1.25rem !important;
+                height: 1.25rem !important;
+            }
+            .viho-template-active .page-main-header .main-header-right .left-menu-header {
+                max-width: 150px !important;
+            }
+            .viho-template-active .container-fluid {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .viho-template-active .page-wrapper.compact-wrapper .page-body-wrapper header.main-nav {
+                width: 70px !important;
+                min-width: 70px !important;
+            }
+            .viho-template-active .page-wrapper.compact-wrapper .page-body-wrapper header.main-nav .main-navbar .nav-menu span {
+                display: none !important;
+            }
+            .viho-template-active .page-wrapper.compact-wrapper .page-body-wrapper .page-body {
+                margin-left: 70px !important;
+            }
+            .viho-template-active .page-main-header .main-header-right .main-header-left {
+                width: 70px !important;
+            }
+            .viho-template-active .logo-wrapper img {
+                display: none !important;
+            }
+            .viho-template-active .main-nav .sidebar-user img {
+                width: 40px !important;
+                height: 40px !important;
+            }
+            .viho-template-active .main-nav .sidebar-user h6, 
+            .viho-template-active .main-nav .sidebar-user p {
+                display: none !important;
+            }
+        }
+
         .fa-lg {
             font-size: 1.33333em;
             line-height: 0.75em;

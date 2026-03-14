@@ -32,7 +32,9 @@
 @endpush
 
 @section('content')
-    {!! $dashboard_body ?? '' !!}
+    <div class="viho-dashboard">
+        {!! $dashboard_body ?? '' !!}
+    </div>
 @endsection
 
 @push('scripts')

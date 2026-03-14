@@ -1851,12 +1851,10 @@ class SellController extends Controller
 
         // Dashboard sales order
         if (! empty(request()->input('for_dashboard_sales_order'))) {
-            if ($for_count) {
-                $query->whereIn('transactions.status', ['partial', 'ordered']);
-            } else {
-                $query->whereIn('transactions.status', ['partial', 'ordered'])
-                      ->orHavingRaw('so_qty_remaining > 0');
-            }
+            $query->where(function ($q) {
+                $q->whereIn('transactions.status', ['partial', 'ordered'])
+                  ->orWhere('tsl_agg.so_qty_remaining', '>', 0);
+            });
         }
 
         // Sales order view restrictions
