@@ -431,6 +431,23 @@
         font-weight: 700 !important;
     }
 
+    /* Font Awesome 5 to 4 mapping shims for DataTables buttons */
+    .viho-template-active .fa-file-csv:before {
+        content: "\f1c3" !important; /* Map to fa-file-excel-o */
+    }
+    .viho-template-active .fa-file-excel:before {
+        content: "\f1c3" !important; /* fa-file-excel-o */
+    }
+    .viho-template-active .fa-file-pdf:before {
+        content: "\f1c8" !important; /* fa-file-pdf-o */
+    }
+    .viho-template-active .fa-file-import:before {
+        content: "\f090" !important; /* fa-arrow-circle-o-right */
+    }
+    .viho-template-active .fa-file-export:before {
+        content: "\f08b" !important; /* fa-arrow-circle-o-left */
+    }
+
     /* DataTables Buttons Styling */
     .viho-template-active .dt-buttons {
         margin-bottom: 0 !important;
@@ -440,27 +457,36 @@
         justify-content: center !important;
     }
 
+    .viho-template-active .dt-button i {
+        font-size: 14px !important;
+        color: #ffffff !important;
+        display: inline-block !important;
+        font-family: "Font Awesome 5 Free", "FontAwesome", "Font Awesome 5 Brands", sans-serif !important;
+        font-weight: 900 !important;
+        margin-right: 5px !important;
+        vertical-align: middle !important;
+    }
+
     .viho-template-active .dt-button {
         background-color: #24695C !important;
         color: #ffffff !important;
         border: none !important;
-        border-radius: 3px !important;
-        padding: 2px 5px !important;
-        font-size: 9px !important;
-        margin: 0 1px !important;
+        border-radius: 5px !important;
+        padding: 6px 12px !important;
+        font-size: 12px !important;
+        margin: 2px 3px !important;
         white-space: nowrap !important;
         display: inline-flex !important;
         align-items: center !important;
-        gap: 3px !important;
         line-height: 1 !important;
+        box-shadow: 0 4px 12px rgba(36, 105, 92, 0.2) !important;
+        transition: all 0.3s ease !important;
     }
 
-    .viho-template-active .dt-button i {
-        font-size: 10px !important;
-        color: #ffffff !important;
-        display: inline-block !important;
-        font-family: "Font Awesome 5 Free", "FontAwesome" !important;
-        font-weight: 900 !important;
+    .viho-template-active .dt-button:hover {
+        background-color: #1b4f45 !important;
+        box-shadow: 0 6px 15px rgba(36, 105, 92, 0.3) !important;
+        transform: translateY(-1px) !important;
     }
 
     .viho-template-active .dataTables_wrapper .dataTables_filter input {
