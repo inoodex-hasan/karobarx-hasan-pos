@@ -12,13 +12,19 @@
         .viho-template-active .tab-content, 
         .viho-template-active .tab-pane,
         .viho-template-active #product_table,
-        .viho-template-active #product_table_wrapper,
+        .viho-template-active #product_table_wrapper {
+            background-color: #ffffff !important;
+            color: #2c323f !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
         .viho-template-active .dataTables_wrapper {
             background-color: #ffffff !important;
             color: #2c323f !important;
             opacity: 1 !important;
             visibility: visible !important;
-            display: block !important;
+            overflow-x: auto !important;
         }
 
         .viho-template-active #product_table td,
@@ -26,6 +32,7 @@
         .viho-template-active #product_table td *,
         .viho-template-active #product_table th * {
             color: #2c323f !important;
+            white-space: nowrap;
         }
 
         .viho-template-active #product_table td {
@@ -301,6 +308,7 @@
                 aaSorting: [
                     [3, 'asc']
                 ],
+                autoWidth: false,
                 dom: "<'row align-items-center mb-3'<'col-sm-12 col-md-2'l><'col-sm-12 col-md-8 text-center'B><'col-sm-12 col-md-2 text-md-end'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 text-md-end'p>>",
                 "ajax": {
                     "url": products_ajax_url,

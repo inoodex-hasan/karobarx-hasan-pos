@@ -2,7 +2,8 @@
     $colspan = 15;
     $custom_labels = json_decode(session('business.custom_labels'), true);
 @endphp
-<table class="table table-bordered table-striped ajax_view" id="product_table">
+<div style="overflow-x: auto; width: 100%;">
+<table class="table table-bordered table-striped ajax_view" id="product_table" style="min-width: 1400px;">
     <thead>
         <tr>
             <th><input type="checkbox" id="select-all-row" data-table-id="product_table"></th>
@@ -83,3 +84,4 @@
         </tr>
     </tfoot>
 </table>
+</div>

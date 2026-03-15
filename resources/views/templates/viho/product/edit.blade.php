@@ -16,6 +16,20 @@
         </div>
     </div>
 
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3>@lang('product.edit_product')</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {!! Form::open(['url' => action([\App\Http\Controllers\ProductController::class, 'update'] , [$product->id] ), 'method' => 'PUT', 'id' => 'product_add_form',
+            'class' => 'product_form', 'files' => true ]) !!}
+    <input type="hidden" id="product_id" value="{{ $product->id }}">
+
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
@@ -23,9 +37,6 @@
                     <h5>@lang('product.edit_product')</h5>
                 </div>
                 <div class="card-body">
-                    {!! Form::open(['url' => action([\App\Http\Controllers\ProductController::class, 'update'] , [$product->id] ), 'method' => 'PUT', 'id' => 'product_add_form',
-                            'class' => 'product_form', 'files' => true ]) !!}
-                    <input type="hidden" id="product_id" value="{{ $product->id }}">
                     <div class="row">
                         <div class="col-sm-4">
                           <div class="form-group">
@@ -180,10 +191,21 @@
                 </small>
               </div>
             </div>
-    @endcomponent
+    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- End first card -->
 
-    @component('components.widget', ['class' => 'box-primary'])
-        <div class="row">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>@lang('product.basic_details')</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
         @if(session('business.enable_product_expiry'))
 
           @if(session('business.expiry_type') == 'add_expiry')
@@ -327,11 +349,20 @@
         </div>
         <!--custom fields-->
         @include('layouts.partials.module_form_part')
+                    </div>
+                </div>
+            </div>
         </div>
-    @endcomponent
+    </div><!-- End second card -->
 
-    @component('components.widget', ['class' => 'box-primary'])
-        <div class="row">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>@lang('product.taxes_and_pricing')</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
             <div class="col-sm-4 @if(!session('business.enable_price_tax')) hide @endif">
               <div class="form-group">
                 {!! Form::label('tax', __('product.applicable_tax') . ':') !!}
@@ -356,37 +387,37 @@
               </div>
             </div>
 
-            <div class="form-group col-sm-12" id="product_form_part"></div>
+            <div class="form-group col-sm-12" id="product_form_part">
+                @include('product.partials.edit_single_product_form_part', ['product_deatails' => $product, 'profit_percent' => $default_profit_percent])
+            </div>
             <input type="hidden" id="variation_counter" value="0">
             <input type="hidden" id="default_profit_percent" value="{{ $default_profit_percent }}">
+                    </div>
+                </div>
             </div>
-    @endcomponent
-
-  <div class="row">
-    <input type="hidden" name="submit_type" id="submit_type">
-        <div class="col-sm-12">
-          <div class="text-center">
-            <div class="btn-group">
-              @if($selling_price_group_count)
-                <button type="submit" value="submit_n_add_selling_prices" class="btn btn-lg btn-warning">@lang('lang_v1.save_n_add_selling_price_group_prices')</button>
-              @endif
-
-              @can('product.opening_stock')
-              <button type="submit" @if(empty($product->enable_stock)) disabled="true" @endif id="opening_stock_button"  value="update_n_edit_opening_stock" class="btn btn-lg bg-purple text-white submit_product_form">@lang('lang_v1.update_n_edit_opening_stock')</button>
-              @endif
-
-              <button type="submit" value="save_n_add_another" class="btn btn-lg bg-maroon text-white submit_product_form">@lang('lang_v1.update_n_add_another')</button>
-
-              <button type="submit" value="submit" class="btn btn-lg btn-primary submit_product_form">@lang('messages.update')</button>
-            </div>
-          </div>
         </div>
-  </div>
-{!! Form::close() !!}
+    </div><!-- End third card -->
+    <div class="row">
+        <input type="hidden" name="submit_type" id="submit_type">
+        <div class="col-sm-12">
+            <div class="text-center">
+                <div class="btn-group">
+                    @if($selling_price_group_count)
+                        <button type="submit" value="submit_n_add_selling_prices" class="tw-dw-btn tw-dw-btn-warning tw-text-white tw-dw-btn-lg submit_product_form">@lang('lang_v1.save_n_add_selling_price_group_prices')</button>
+                    @endif
+
+                    @can('product.opening_stock')
+                        <button type="submit" @if(empty($product->enable_stock)) disabled="true" @endif id="opening_stock_button"  value="update_n_edit_opening_stock" class="tw-dw-btn tw-text-white tw-dw-btn-lg bg-purple submit_product_form">@lang('lang_v1.update_n_edit_opening_stock')</button>
+                    @endif
+
+                    <button type="submit" value="save_n_add_another" class="tw-dw-btn tw-text-white tw-dw-btn-lg bg-maroon submit_product_form">@lang('lang_v1.update_n_add_another')</button>
+
+                    <button type="submit" value="submit" class="tw-dw-btn tw-dw-btn-primary tw-text-white tw-dw-btn-lg submit_product_form">@lang('messages.update')</button>
                 </div>
             </div>
         </div>
     </div>
+{!! Form::close() !!}
 @endsection
 
 @section('javascript')

@@ -202,38 +202,19 @@ class ProductController extends Controller
                 ->addColumn(
                     'action',
                     function ($row) use ($selling_price_group_count) {
-                        $is_ai_template = $this->isAiTemplateRequest() || request()->is('ai-template/*');
-                        $base_url = url('/');
-                        $ai_url = url('/ai-template');
+                        $referer = request()->headers->get('referer', '');
+                        $is_ai_template = request()->is('ai-template/*') || (strpos($referer, '/ai-template') !== false);
+                        $prefix = $is_ai_template ? '/ai-template' : '';
                         
-                        $action_labels_show = action([\App\Http\Controllers\LabelsController::class, 'show']);
-                        $action_product_view = action([\App\Http\Controllers\ProductController::class, 'view'], [$row->id]);
-                        $action_product_edit = action([\App\Http\Controllers\ProductController::class, 'edit'], [$row->id]);
-                        $action_product_destroy = action([\App\Http\Controllers\ProductController::class, 'destroy'], [$row->id]);
-                        $action_product_activate = action([\App\Http\Controllers\ProductController::class, 'activate'], [$row->id]);
-                        $action_opening_stock = action([\App\Http\Controllers\OpeningStockController::class, 'add'], ['product_id' => $row->id]);
-                        $action_stock_history = action([\App\Http\Controllers\ProductController::class, 'productStockHistory'], [$row->id]);
-                        $action_add_selling_prices = action([\App\Http\Controllers\ProductController::class, 'addSellingPrices'], [$row->id]);
-                        $action_create_duplicate = action([\App\Http\Controllers\ProductController::class, 'create'], ['d' => $row->id]);
-
-                        if ($is_ai_template) {
-                            $replace_url = function($url) use ($base_url, $ai_url) {
-                                if (strpos($url, $ai_url) !== false) {
-                                    return $url;
-                                }
-                                return str_replace($base_url, $ai_url, $url);
-                            };
-
-                            $action_labels_show = $replace_url($action_labels_show);
-                            $action_product_view = $replace_url($action_product_view);
-                            $action_product_edit = $replace_url($action_product_edit);
-                            $action_product_destroy = $replace_url($action_product_destroy);
-                            $action_product_activate = $replace_url($action_product_activate);
-                            $action_opening_stock = $replace_url($action_opening_stock);
-                            $action_stock_history = $replace_url($action_stock_history);
-                            $action_add_selling_prices = $replace_url($action_add_selling_prices);
-                            $action_create_duplicate = $replace_url($action_create_duplicate);
-                        }
+                        $action_labels_show = url($prefix . '/labels/show');
+                        $action_product_view = url($prefix . '/products/view/' . $row->id);
+                        $action_product_edit = url($prefix . '/products/' . $row->id . '/edit');
+                        $action_product_destroy = url($prefix . '/products/' . $row->id);
+                        $action_product_activate = url($prefix . '/products/activate/' . $row->id);
+                        $action_opening_stock = url($prefix . '/opening-stock/add/' . $row->id);
+                        $action_stock_history = url($prefix . '/products/stock-history/' . $row->id);
+                        $action_add_selling_prices = url($prefix . '/products/add-selling-prices/' . $row->id);
+                        $action_create_duplicate = url($prefix . '/products/create?d=' . $row->id);
                         
                         if ($is_ai_template) {
                             $html = '<div class="btn-group">
