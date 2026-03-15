@@ -29,6 +29,165 @@
             overflow-x: auto;
         }
 
+        /* Standardize Latest Activity card to prevent content overlap at smaller column widths */
+        .latest-update-sec .card-body {
+            overflow-x: auto;
+            padding: 15px !important;
+        }
+        .latest-update-sec .table-responsive {
+            overflow-x: auto;
+            border: none;
+        }
+        .latest-update-sec table {
+            min-width: 300px; /* Ensure content doesn't shrink too much */
+        }
+        .latest-update-sec .media .media-body span {
+            display: block;
+            white-space: normal; /* Allow wrapping */
+            max-width: 250px; /* Increased for 50% width col */
+        }
+
+        /* Equal height cards for the second row */
+        .row-equal-height {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: stretch;
+        }
+        .row-equal-height > div {
+            display: flex;
+            margin-bottom: 30px;
+        }
+        .row-equal-height > div > .card {
+            width: 100%;
+            height: 100% !important;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 0 !important;
+        }
+        .row-equal-height > div > .card .card-body {
+            flex: 1 1 auto;
+        }
+        /* Override template-specific margin that might break the height balance */
+        .trasaction-sec.card .card-body {
+            margin-bottom: 0 !important;
+        }
+
+        /* Ensure Recent Orders table fits within 50% card width - Zero Scroll Strategy */
+        .recent-orders-card .card-body {
+            padding: 10px !important;
+        }
+        .recent-orders-card .table-responsive {
+            overflow: hidden !important; 
+        }
+        .recent-orders-card table {
+            width: 100% !important;
+            table-layout: fixed !important;
+            border-collapse: collapse !important;
+        }
+        .recent-orders-card table thead th {
+            background-color: #ffffff !important; 
+            border-bottom: 2px solid #f2f4f6 !important;
+            color: #2b2b2b !important;
+            font-weight: 600 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .recent-orders-card table th, 
+        .recent-orders-card table td {
+            padding: 12px 8px !important; /* Breathable spacing */
+            font-size: 12px !important;
+            vertical-align: middle !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap !important;
+            border-bottom: 1px solid #f8f9fa !important; /* Subtle row separator */
+            -webkit-font-smoothing: antialiased;
+        }
+        .recent-orders-card table tbody tr {
+            transition: background-color 0.2s ease;
+        }
+        .recent-orders-card table tbody tr:hover {
+            background-color: #f9fafb !important; /* Subtle hover effect */
+        }
+        /* Strict Column Widths - Optimized for visibility and wrapping */
+        .recent-orders-card table th:nth-child(1), .recent-orders-card table td:nth-child(1) { 
+            width: 38%; 
+            white-space: normal !important; 
+            word-break: break-word;
+            overflow: visible;
+        } 
+        .recent-orders-card table th:nth-child(2), .recent-orders-card table td:nth-child(2) { width: 14%; text-align: center; } /* Date */
+        .recent-orders-card table th:nth-child(3), .recent-orders-card table td:nth-child(3) { width: 10%; text-align: center; } /* Qty */
+        .recent-orders-card table th:nth-child(4), .recent-orders-card table td:nth-child(4) { width: 12%; text-align: center; } /* Value */
+        .recent-orders-card table th:nth-child(5), .recent-orders-card table td:nth-child(5) { width: 13%; text-align: center; } /* Rate */
+        .recent-orders-card table th:nth-child(6), .recent-orders-card table td:nth-child(6) { width: 13%; text-align: center; } /* Status */
+
+        .recent-orders-card .media-body span {
+            max-width: 100%;
+            display: block;
+            line-height: 1.2;
+        }
+        .recent-orders-card table img.img-fluid {
+            max-width: 100%; 
+            height: 16px;
+        }
+        .recent-orders-card .media img {
+            width: 25px !important;
+            height: 25px !important;
+            margin-right: 8px;
+        }
+
+        /* Zero Scroll Strategy for Latest Activity */
+        .latest-update-sec .card-body {
+            padding: 10px !important;
+        }
+        .latest-update-sec .table-responsive {
+            overflow: hidden !important;
+        }
+        .latest-update-sec table {
+            width: 100% !important;
+            table-layout: fixed !important;
+            border-collapse: collapse !important;
+        }
+        .latest-update-sec table tr {
+            background-color: #ffffff !important;
+        }
+        .latest-update-sec table td {
+            padding: 10px 5px !important;
+            font-size: 12px !important;
+            vertical-align: middle !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap !important;
+            border-bottom: 1px solid #f2f4f6 !important;
+        }
+        /* Column Widths (70% for Activity, 15% each for Edit/Delete) */
+        .latest-update-sec table td:nth-child(1) { 
+            width: 70%; 
+            white-space: normal !important; 
+            word-break: break-word;
+            overflow: visible;
+        }
+        .latest-update-sec table td:nth-child(2) { width: 15%; text-align: center; }
+        .latest-update-sec table td:nth-child(3) { width: 15%; text-align: center; }
+
+        .latest-update-sec .media svg {
+            width: 20px !important;
+            height: 20px !important;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        .latest-update-sec .media-body span {
+            display: block;
+            line-height: 1.2;
+            font-weight: 500;
+        }
+        .latest-update-sec .media-body p {
+            font-size: 10px;
+            margin-top: 2px;
+            color: #898989;
+        }
+
         /* Reduce the gap between header and dashboard cards */
         .viho-dashboard {
             margin-top: -40px !important;

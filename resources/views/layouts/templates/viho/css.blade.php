@@ -373,7 +373,7 @@
 
     .viho-template-active .table thead tr th {
         color: #2c323f !important;
-        background-color: #f5f6fb !important;
+        /* background-color: #f5f6fb !important; */
         opacity: 1 !important;
         visibility: visible !important;
     }
