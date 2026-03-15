@@ -28,6 +28,14 @@
         .recent-orders-card .card-body {
             overflow-x: auto;
         }
+
+        /* Reduce the gap between header and dashboard cards */
+        .viho-dashboard {
+            margin-top: -40px !important;
+        }
+        .page-body {
+            padding-top: 0 !important;
+        }
     </style>
 @endpush
 
