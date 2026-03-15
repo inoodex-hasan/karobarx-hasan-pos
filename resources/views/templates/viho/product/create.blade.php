@@ -2,37 +2,29 @@
 @section('title', __('product.add_new_product'))
 
 @section('content')
-    <div class="container-fluid">
-        <div class="page-header">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h3>@lang('product.add_new_product')</h3>
-                </div>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1 class="tw-text-xl md:tw-text-3xl tw-font-bold tw-text-black">@lang('product.add_new_product')</h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    @php
+    $form_class = empty($duplicate_product) ? 'create' : '';
+    $is_image_required = !empty($common_settings['is_product_image_required']);
+    @endphp
+    {!! Form::open(['url' => action([\App\Http\Controllers\ProductController::class, 'store']), 'method' => 'post',
+    'id' => 'product_add_form','class' => 'product_form ' . $form_class, 'files' => true ]) !!}
+    @component('components.widget', ['class' => 'box-primary'])
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                {!! Form::label('name', __('product.product_name') . ':*') !!}
+                {!! Form::text('name', !empty($duplicate_product->name) ? $duplicate_product->name : null, ['class' => 'form-control', 'required',
+                'placeholder' => __('product.product_name')]); !!}
             </div>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5>@lang('product.add_new_product')</h5>
-                </div>
-                <div class="card-body">
-                    @php
-                    $form_class = empty($duplicate_product) ? 'create' : '';
-                    $is_image_required = !empty($common_settings['is_product_image_required']);
-                    @endphp
-                    {!! Form::open(['url' => action([\App\Http\Controllers\ProductController::class, 'store']), 'method' => 'post',
-                    'id' => 'product_add_form','class' => 'product_form ' . $form_class, 'files' => true ]) !!}
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                {!! Form::label('name', __('product.product_name') . ':*') !!}
-                                {!! Form::text('name', !empty($duplicate_product->name) ? $duplicate_product->name : null, ['class' => 'form-control', 'required',
-                                'placeholder' => __('product.product_name')]); !!}
-                            </div>
-                        </div>
 
         <div class="col-sm-4">
             <div class="form-group">
@@ -188,159 +180,10 @@
             </small>
         </div>
     </div>
+    @endcomponent
 
+    @component('components.widget', ['class' => 'box-primary'])
     <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5>@lang('product.basic_details')</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-        @if(session('business.enable_product_expiry'))
-
-        @if(session('business.expiry_type') == 'add_expiry')
-        @php
-        $expiry_period = 12;
-        $hide = true;
-        @endphp
-        @else
-        @php
-        $expiry_period = null;
-        $hide = false;
-        @endphp
-        @endif
-        <div class="col-sm-4 @if($hide) hide @endif">
-            <div class="form-group">
-                <div class="multi-input">
-                    {!! Form::label('expiry_period', __('product.expires_in') . ':') !!}<br>
-                    {!! Form::text('expiry_period', !empty($duplicate_product->expiry_period) ? @num_format($duplicate_product->expiry_period) : $expiry_period, ['class' => 'form-control pull-left input_number',
-                    'placeholder' => __('product.expiry_period'), 'style' => 'width:60%;']); !!}
-                    {!! Form::select('expiry_period_type', ['months'=>__('product.months'), 'days'=>__('product.days'), '' =>__('product.not_applicable') ], !empty($duplicate_product->expiry_period_type) ? $duplicate_product->expiry_period_type : 'months', ['class' => 'form-control select2 pull-left', 'style' => 'width:40%;', 'id' => 'expiry_period_type']); !!}
-                </div>
-            </div>
-        </div>
-        @endif
-
-        <div class="col-sm-4">
-            <div class="form-group">
-                <br>
-                <label>
-                    {!! Form::checkbox('enable_sr_no', 1, !(empty($duplicate_product)) ? $duplicate_product->enable_sr_no : false, ['class' => 'input-icheck']); !!} <strong>@lang('lang_v1.enable_imei_or_sr_no')</strong>
-                </label> @show_tooltip(__('lang_v1.tooltip_sr_no'))
-            </div>
-        </div>
-
-        <div class="col-sm-4">
-            <div class="form-group">
-                <br>
-                <label>
-                    {!! Form::checkbox('not_for_selling', 1, !(empty($duplicate_product)) ? $duplicate_product->not_for_selling : false, ['class' => 'input-icheck']); !!} <strong>@lang('lang_v1.not_for_selling')</strong>
-                </label> @show_tooltip(__('lang_v1.tooltip_not_for_selling'))
-            </div>
-        </div>
-
-        <div class="clearfix"></div>
-
-        <!-- Rack, Row & position number -->
-        @if(session('business.enable_racks') || session('business.enable_row') || session('business.enable_position'))
-        <div class="col-md-12">
-            <h4>@lang('lang_v1.rack_details'):
-                @show_tooltip(__('lang_v1.tooltip_rack_details'))
-            </h4>
-        </div>
-        @foreach($business_locations as $id => $location)
-        <div class="col-sm-3">
-            <div class="form-group">
-                {!! Form::label('rack_' . $id, $location . ':') !!}
-
-                @if(session('business.enable_racks'))
-                {!! Form::text('product_racks[' . $id . '][rack]', !empty($rack_details[$id]['rack']) ? $rack_details[$id]['rack'] : null, ['class' => 'form-control', 'id' => 'rack_' . $id,
-                'placeholder' => __('lang_v1.rack')]); !!}
-                @endif
-
-                @if(session('business.enable_row'))
-                {!! Form::text('product_racks[' . $id . '][row]', !empty($rack_details[$id]['row']) ? $rack_details[$id]['row'] : null, ['class' => 'form-control', 'placeholder' => __('lang_v1.row')]); !!}
-                @endif
-
-                @if(session('business.enable_position'))
-                {!! Form::text('product_racks[' . $id . '][position]', !empty($rack_details[$id]['position']) ? $rack_details[$id]['position'] : null, ['class' => 'form-control', 'placeholder' => __('lang_v1.position')]); !!}
-                @endif
-            </div>
-        </div>
-        @endforeach
-        @endif
-
-        <div class="col-sm-4">
-            <div class="form-group">
-                {!! Form::label('weight', __('lang_v1.weight') . ':') !!}
-                {!! Form::text('weight', !empty($duplicate_product->weight) ? $duplicate_product->weight : null, ['class' => 'form-control', 'placeholder' => __('lang_v1.weight')]); !!}
-            </div>
-        </div>
-        @php
-        $custom_labels = json_decode(session('business.custom_labels'), true);
-        $product_custom_fields = !empty($custom_labels['product']) ? $custom_labels['product'] : [];
-        $product_cf_details = !empty($custom_labels['product_cf_details']) ? $custom_labels['product_cf_details'] : [];
-
-        @endphp
-        <!--custom fields-->
-        <div class="clearfix"></div>
-
-        @foreach($product_custom_fields as $index => $cf)
-            @if(!empty($cf))
-                @php
-                    $db_field_name = 'product_custom_field' . $loop->iteration;
-                    $cf_type = !empty($product_cf_details[$loop->iteration]['type']) ? $product_cf_details[$loop->iteration]['type'] : 'text';
-                    $dropdown = !empty($product_cf_details[$loop->iteration]['dropdown_options']) ? explode(PHP_EOL, $product_cf_details[$loop->iteration]['dropdown_options']) : [];
-                @endphp
-
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        {!! Form::label($db_field_name, $cf . ':') !!}
-
-                        @if(in_array($cf_type, ['text', 'date']))
-                        
-                            <input type="{{$cf_type}}" name="{{$db_field_name}}" id="{{$db_field_name}}" value="{{!empty($duplicate_product->$db_field_name) ? $duplicate_product->$db_field_name : null}}" class="form-control" placeholder="{{$cf}}">
-
-                        @elseif($cf_type == 'dropdown')
-                            <!-- {!! Form::select($db_field_name, $dropdown, !empty($duplicate_product->$db_field_name) ? $duplicate_product->$db_field_name : null, ['placeholder' => $cf, 'class' => 'form-control select2']); !!} -->
-                            <select name="{{ $db_field_name }}" id="{{ $db_field_name }}" class="form-control select2">
-                                <option value="">{{ $cf }}</option>
-                                @foreach($dropdown as $option)
-                                    <option value="{{ $option }}" @if(!empty($duplicate_product->$db_field_name) && $option == $duplicate_product->$db_field_name) selected @endif>
-                                        {{ $option }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        @endif
-                    </div>
-                </div>
-            @endif
-        @endforeach
-
-        <div class="col-sm-3">
-            <div class="form-group">
-                {!! Form::label('preparation_time_in_minutes', __('lang_v1.preparation_time_in_minutes') . ':') !!}
-                {!! Form::number('preparation_time_in_minutes', !empty($duplicate_product->preparation_time_in_minutes) ? $duplicate_product->preparation_time_in_minutes : null, ['class' => 'form-control', 'placeholder' => __('lang_v1.preparation_time_in_minutes')]); !!}
-            </div>
-        </div>
-        <!--custom fields-->
-        <div class="clearfix"></div>
-        @include('layouts.partials.module_form_part')
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5>@lang('product.taxes_and_pricing')</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
 
         <div class="col-sm-4 @if(!session('business.enable_price_tax')) hide @endif">
             <div class="form-group">
@@ -374,37 +217,34 @@
         <input type="hidden" id="variation_counter" value="1">
         <input type="hidden" id="default_profit_percent" value="{{ $default_profit_percent }}">
 
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
+    @endcomponent
     <div class="row">
         <div class="col-sm-12">
             <input type="hidden" name="submit_type" id="submit_type">
             <div class="text-center">
                 <div class="btn-group">
                     @if($selling_price_group_count)
-                    <button type="submit" value="submit_n_add_selling_prices" class="btn btn-lg btn-warning">@lang('lang_v1.save_n_add_selling_price_group_prices')</button>
+                    <button type="submit" value="submit_n_add_selling_prices" class="tw-dw-btn tw-dw-btn-warning tw-dw-btn-lg tw-text-white submit_product_form">@lang('lang_v1.save_n_add_selling_price_group_prices')</button>
                     @endif
 
                     @can('product.opening_stock')
-                    <button id="opening_stock_button" @if(!empty($duplicate_product) && $duplicate_product->enable_stock == 0) disabled @endif type="submit" value="submit_n_add_opening_stock" class="btn btn-lg bg-purple text-white">@lang('lang_v1.save_n_add_opening_stock')</button>
+                    <button id="opening_stock_button" @if(!empty($duplicate_product) && $duplicate_product->enable_stock == 0) disabled @endif type="submit" value="submit_n_add_opening_stock" class="tw-dw-btn tw-dw-btn-lg tw-text-white bg-purple submit_product_form">@lang('lang_v1.save_n_add_opening_stock')</button>
                     @endcan
 
-                    <button type="submit" value="save_n_add_another" class="btn btn-lg bg-maroon text-white">@lang('lang_v1.save_n_add_another')</button>
+                    <button type="submit" value="save_n_add_another" class="tw-dw-btn tw-dw-btn-lg bg-maroon submit_product_form">@lang('lang_v1.save_n_add_another')</button>
 
-                    <button type="submit" value="submit" class="btn btn-lg btn-primary">@lang('messages.save')</button>
+                    <button type="submit" value="submit" class="tw-dw-btn tw-dw-btn-primary tw-dw-btn-lg tw-text-white submit_product_form">@lang('messages.save')</button>
                 </div>
 
             </div>
         </div>
     </div>
     {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
-    </div>
+
+</section>
+<!-- /.content -->
+
 @endsection
 
 @section('javascript')
@@ -425,9 +265,6 @@
             },
             minLength: 2,
             ignoreIfFocusOn: ['input', '.form-control']
-            // onKeyDetect: function(iKeyCode){ // output all potentially relevant key events - great for debugging!
-            //     console.log('Pressed: ' + iKeyCode);
-            // }
         });
     });
 </script>

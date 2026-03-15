@@ -80,5 +80,5 @@
     </section>
 @stop
 @section('javascript')
-    @includeIf('taxonomy.taxonomies_js')
+    @includeIf('templates.viho.taxonomy.taxonomies_js')
 @endsection

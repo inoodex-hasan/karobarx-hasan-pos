@@ -19,11 +19,20 @@
             //Category table
             if ($('#category_table').length) {
                 var category_type = $('#category_type').val();
+                var taxonomy_index_url = (window.location && window.location.pathname && window.location.pathname.indexOf('/ai-template') === 0)
+                    ? '/ai-template/taxonomies?type=' + category_type
+                    : '/taxonomies?type=' + category_type;
+
+                // Destroy existing DataTable instance if it exists
+                if ($.fn.DataTable.isDataTable('#category_table')) {
+                    $('#category_table').DataTable().destroy();
+                }
+
                 category_table = $('#category_table').DataTable({
                     processing: true,
                     serverSide: true,
                     fixedHeader:false,
-                    ajax: '/taxonomies?type=' + category_type,
+                    ajax: taxonomy_index_url,
                     columns: [
                         { data: 'name', name: 'name', orderable: false, searchable: true },
                         @if($cat_code_enabled)
@@ -32,6 +41,11 @@
                         { data: 'description', name: 'description', orderable: false, searchable: true },
                         { data: 'action', name: 'action', orderable: false, searchable: false},
                     ],
+                    drawCallback: function () {
+                        if (typeof feather !== 'undefined') {
+                            feather.replace();
+                        }
+                    },
                 });
             }
         }
