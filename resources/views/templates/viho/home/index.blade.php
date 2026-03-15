@@ -9,7 +9,7 @@
 
     <div class="@if($is_viho_template) viho-dashboard @endif tw-pb-6 tw-bg-gradient-to-r tw-from-@if(!empty(session('business.theme_color'))){{session('business.theme_color')}}@else{{'primary'}}@endif-800 tw-to-@if(!empty(session('business.theme_color'))){{session('business.theme_color')}}@else{{'primary'}}@endif-900 xl:tw-pb-0 ">
         @if ($is_viho_template)
-            <div class="page-header tw-px-5 tw-pt-3">
+            <div class="page-header tw-px-5">
                 <div class="row">
                     <div class="col-sm-6">
                         <h3 class="tw-m-0">{{ __('home.home') }}</h3>
@@ -29,7 +29,7 @@
             </div>
         @endif
 
-        <div class="tw-px-5 tw-pt-3">
+        <div class="tw-px-5">
             {{-- <div class="sm:tw-flex sm:tw-items-center sm:tw-justify-between sm:tw-gap-12">
                 <h1 class="tw-text-2xl tw-font-medium tw-tracking-tight tw-text-white">
                     {{ __('home.welcome_message', ['name' => Session::get('user.first_name')]) }}
@@ -93,7 +93,7 @@
                     </div>
                     @if (auth()->user()->can('dashboard.data'))
                         @if ($is_admin)
-                            <div class="tw-grid tw-grid-cols-1 tw-gap-4 tw-mt-6 sm:tw-grid-cols-2 xl:tw-grid-cols-4 sm:tw-gap-5">
+                            <div class="tw-grid tw-grid-cols-1 tw-gap-4 tw-mt-2 sm:tw-grid-cols-2 xl:tw-grid-cols-4 sm:tw-gap-5">
                             
                                 <div
                                     class="dashboard-metric-card tw-transition-all tw-duration-200 tw-bg-white tw-shadow-sm hover:tw-shadow-md tw-rounded-xl  tw-ring-1 tw-ring-gray-200">
@@ -1034,7 +1034,7 @@
                     [1, 'desc']
                 ],
                 "ajax": {
-                    "url": '{{ action([\App\Http\Controllers\SellController::class, 'index']) }}?sale_type=sales_order',
+                    "url": '{{ route('ai-template.sells.index') }}?sale_type=sales_order',
                     "data": function(d) {
                         d.for_dashboard_sales_order = true;
 
@@ -1088,7 +1088,7 @@
                     serverSide: true,
                     fixedHeader:false,
                     "ajax": {
-                        "url": "{{ action([\App\Http\Controllers\AccountController::class, 'cashFlow']) }}",
+                        "url": "{{ route('ai-template.cash-flow') }}",
                         "data": function(d) {
                             d.type = 'credit';
                             d.only_payment_recovered = true;
@@ -1145,7 +1145,7 @@
                         [1, 'desc']
                     ],
                     ajax: {
-                        url: '{{ action([\App\Http\Controllers\PurchaseOrderController::class, 'index']) }}',
+                        url: '{{ route('purchase-order.index') }}',
                         data: function(d) {
                             d.from_dashboard = true;
 
@@ -1203,7 +1203,7 @@
                         [1, 'desc']
                     ],
                     ajax: {
-                        url: '{{ action([\App\Http\Controllers\PurchaseRequisitionController::class, 'index']) }}',
+                        url: '{{ route('purchase-requisition.index') }}',
                         data: function(d) {
                             d.from_dashboard = true;
 
@@ -1281,7 +1281,7 @@
                     [1, 'desc']
                 ],
                 "ajax": {
-                    "url": '{{ action([\App\Http\Controllers\SellController::class, 'index']) }}',
+                    "url": '{{ route('ai-template.sells.index') }}',
                     "data": function(d) {
                         d.only_pending_shipments = true;
                         if ($('#pending_shipments_location').length > 0) {

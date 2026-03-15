@@ -5102,7 +5102,7 @@ class TransactionUtil extends Util
             // Pre-aggregate sell line totals per transaction and join once
             $sells->leftJoinSub(
                 DB::table('transaction_sell_lines as tsl')
-                    ->selectRaw('tsl.transaction_id, COUNT(DISTINCT tsl.id) as total_items, SUM(tsl.quantity - tsl.so_quantity_invoiced) as so_qty_remaining')
+                    ->selectRaw('tsl.transaction_id, COUNT(DISTINCT tsl.id) as total_items, SUM(tsl.quantity - COALESCE(tsl.so_quantity_invoiced, 0)) as so_qty_remaining')
                     ->whereNull('tsl.parent_sell_line_id')
                     ->groupBy('tsl.transaction_id'),
                 'tsl_agg',

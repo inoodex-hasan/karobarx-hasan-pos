@@ -1,36 +1,27 @@
-@extends('templates.viho.layout')
+@extends('layouts.app')
 
 @section('title', __('sale.pos_sale'))
 
 @section('content')
-    <div class="container-fluid">
-        <div class="page-header">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h3>@lang('sale.pos_sale')</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <input type="hidden" id="amount_rounding_method" value="{{ $pos_settings['amount_rounding_method'] ?? '' }}">
-    @if (!empty($pos_settings['allow_overselling']))
-        <input type="hidden" id="is_overselling_allowed">
-    @endif
-    @if (session('business.enable_rp') == 1)
-        <input type="hidden" id="reward_point_enabled">
-    @endif
-    @php
-        $is_discount_enabled = $pos_settings['disable_discount'] != 1 ? true : false;
-        $is_rp_enabled = session('business.enable_rp') == 1 ? true : false;
-    @endphp
-    {!! Form::open([
-        'url' => action([\App\Http\Controllers\SellPosController::class, 'store']),
-        'method' => 'post',
+    <section class="content no-print">
+        <input type="hidden" id="amount_rounding_method" value="{{ $pos_settings['amount_rounding_method'] ?? '' }}">
+        @if (!empty($pos_settings['allow_overselling']))
+            <input type="hidden" id="is_overselling_allowed">
+        @endif
+        @if (session('business.enable_rp') == 1)
+            <input type="hidden" id="reward_point_enabled">
+        @endif
+        @php
+            $is_discount_enabled = $pos_settings['disable_discount'] != 1 ? true : false;
+            $is_rp_enabled = session('business.enable_rp') == 1 ? true : false;
+        @endphp
+        {!! Form::open([
+            'url' => action([\App\Http\Controllers\SellPosController::class, 'store']),
+            'method' => 'post',
             'id' => 'add_pos_sell_form',
         ]) !!}
-        <div class="row">
-            <div class="col-md-12">
+        <div class="row mb-12">
+            <div class="col-md-12 tw-pt-0 tw-mb-14">
                 <div class="row tw-flex lg:tw-flex-row md:tw-flex-col sm:tw-flex-col tw-flex-col tw-items-start md:tw-gap-4">
                     {{-- <div class="@if (empty($pos_settings['hide_product_suggestion'])) col-md-7 @else col-md-10 col-md-offset-1 @endif no-padding pr-12"> --}}
                     <div class="tw-px-3 tw-w-full  lg:tw-px-0 lg:tw-pr-0 @if(empty($pos_settings['hide_product_suggestion'])) lg:tw-w-[60%]  @else lg:tw-w-[100%] @endif">
@@ -77,6 +68,7 @@
         </div>
         @include('sale_pos.partials.pos_form_actions')
         {!! Form::close() !!}
+    </section>
 
     <!-- This will be printed -->
     <section class="invoice print_section" id="receipt_section">
@@ -87,6 +79,7 @@
     @if (empty($pos_settings['hide_product_suggestion']) && isMobile())
         @include('sale_pos.partials.mobile_product_suggestions')
     @endif
+    <!-- /.content -->
     <div class="modal fade register_details_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
     </div>
     <div class="modal fade close_register_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">

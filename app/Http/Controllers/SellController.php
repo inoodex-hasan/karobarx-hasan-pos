@@ -464,8 +464,18 @@ class SellController extends Controller
 
                     return $status;
                 })
-                ->addColumn('conatct_name', '@if(!empty($supplier_business_name)) {{$supplier_business_name}}, <br> @endif {{$name}}')
-                ->editColumn('total_items', '{{@format_quantity($total_items)}}')
+                ->addColumn('conatct_name', function ($row) {
+                    $html = '';
+                    if (! empty($row->supplier_business_name)) {
+                        $html .= $row->supplier_business_name.', <br> ';
+                    }
+                    $html .= $row->name;
+
+                    return $html;
+                })
+                ->editColumn('total_items', function ($row) {
+                    return $this->transactionUtil->num_f($row->total_items, false, null, true);
+                })
                 ->filterColumn('conatct_name', function ($query, $keyword) {
                     $query->where(function ($q) use ($keyword) {
                         $q->where('contacts.name', 'like', "%{$keyword}%")
@@ -525,7 +535,9 @@ class SellController extends Controller
                     }
                     return $status;
                 })
-                ->editColumn('so_qty_remaining', '{{@format_quantity($so_qty_remaining)}}')
+                ->editColumn('so_qty_remaining', function ($row) {
+                    return $this->transactionUtil->num_f($row->so_qty_remaining, false, null, true);
+                })
                 ->setRowAttr([
                     'data-href' => function ($row) {
                         if (auth()->user()->can('sell.view') || auth()->user()->can('view_own_sell_only')) {
@@ -599,7 +611,8 @@ class SellController extends Controller
         if (! $this->moduleUtil->isSubscribed($business_id)) {
             return $this->moduleUtil->expiredResponse();
         } elseif (! $this->moduleUtil->isQuotaAvailable('invoices', $business_id)) {
-            return $this->moduleUtil->quotaExpiredResponse('invoices', $business_id, action([\App\Http\Controllers\SellController::class, 'index']));
+            $index_url = $this->isAiTemplateRequest() ? route('ai-template.sells.index') : route('sells.index');
+            return $this->moduleUtil->quotaExpiredResponse('invoices', $business_id, $index_url);
         }
 
         $walk_in_customer = $this->contactUtil->getWalkInCustomer($business_id);
@@ -1389,10 +1402,24 @@ class SellController extends Controller
 
                     return $invoice_no;
                 })
-                ->editColumn('transaction_date', '{{@format_date($transaction_date)}}')
-                ->editColumn('total_items', '{{@format_quantity($total_items)}}')
-                ->editColumn('total_quantity', '{{@format_quantity($total_quantity)}}')
-                ->addColumn('conatct_name', '@if(!empty($supplier_business_name)) {{$supplier_business_name}}, <br>@endif {{$name}}')
+                ->editColumn('transaction_date', function ($row) {
+                    return $this->transactionUtil->format_date($row->transaction_date);
+                })
+                ->editColumn('total_items', function ($row) {
+                    return $this->transactionUtil->num_f($row->total_items, false, null, true);
+                })
+                ->editColumn('total_quantity', function ($row) {
+                    return $this->transactionUtil->num_f($row->total_quantity, false, null, true);
+                })
+                ->addColumn('conatct_name', function ($row) {
+                    $html = '';
+                    if (! empty($row->supplier_business_name)) {
+                        $html .= $row->supplier_business_name.', <br> ';
+                    }
+                    $html .= $row->name;
+
+                    return $html;
+                })
                 ->filterColumn('conatct_name', function ($query, $keyword) {
                     $query->where(function ($q) use ($keyword) {
                         $q->where('contacts.name', 'like', "%{$keyword}%")
@@ -1854,7 +1881,7 @@ class SellController extends Controller
         if (! empty(request()->input('for_dashboard_sales_order'))) {
             $query->where(function ($q) {
                 $q->whereIn('transactions.status', ['partial', 'ordered'])
-                  ->orWhere('tsl_agg.so_qty_remaining', '>', 0);
+                  ->orWhere(DB::raw('COALESCE(tsl_agg.so_qty_remaining, 0)'), '>', 0);
             });
         }
 

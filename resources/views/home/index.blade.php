@@ -1076,7 +1076,7 @@
                     [1, 'desc']
                 ],
                 "ajax": {
-                    "url": '{{ action([\App\Http\Controllers\SellController::class, 'index']) }}?sale_type=sales_order',
+                    "url": '{{ route('sells.index') }}?sale_type=sales_order',
                     "data": function(d) {
                         d.for_dashboard_sales_order = true;
 
@@ -1142,7 +1142,7 @@
                     serverSide: true,
                     fixedHeader:false,
                     "ajax": {
-                        "url": "{{ action([\App\Http\Controllers\AccountController::class, 'cashFlow']) }}",
+                        "url": "{{ route('account.cash-flow') }}",
                         "data": function(d) {
                             d.type = 'credit';
                             d.only_payment_recovered = true;
@@ -1215,7 +1215,7 @@
                     scrollX: true,
                     scrollCollapse: true,
                     ajax: {
-                        url: '{{ action([\App\Http\Controllers\PurchaseOrderController::class, 'index']) }}',
+                        url: '{{ route('purchase-order.index') }}',
                         data: function(d) {
                             d.from_dashboard = true;
 
@@ -1280,7 +1280,7 @@
                     scrollX: true,
                     scrollCollapse: true,
                     ajax: {
-                        url: '{{ action([\App\Http\Controllers\PurchaseRequisitionController::class, 'index']) }}',
+                        url: '{{ route('purchase-requisition.index') }}',
                         data: function(d) {
                             d.from_dashboard = true;
 
@@ -1365,7 +1365,7 @@
                 scrollX: true,
                 scrollCollapse: true,
                 "ajax": {
-                    "url": '{{ action([\App\Http\Controllers\SellController::class, 'index']) }}',
+                    "url": '{{ route('sells.index') }}',
                     "data": function(d) {
                         d.only_pending_shipments = true;
                         if ($('#pending_shipments_location').length > 0) {

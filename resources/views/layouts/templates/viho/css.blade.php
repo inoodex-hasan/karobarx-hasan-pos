@@ -6,6 +6,7 @@
     $active_layout_template = data_get(session('business.common_settings', []), 'layout_template', 'default');
 @endphp
 
+@if(!(isset($pos_layout) && $pos_layout))
 <link rel="stylesheet" type="text/css" href="{{ $template_asset('css/fontawesome.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ $template_asset('css/icofont.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ $template_asset('css/themify.css') }}">
@@ -14,6 +15,7 @@
 <link rel="stylesheet" type="text/css" href="{{ $template_asset('css/style.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ $template_asset('css/color-1.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ $template_asset('css/responsive.css') }}">
+@endif
 
 <style>
     .viho-template-active .thetop {

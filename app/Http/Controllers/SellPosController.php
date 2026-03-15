@@ -129,6 +129,11 @@ class SellPosController extends Controller
         return 'templates.viho.sale_pos.' . $view;
     }
 
+    protected function indexUrl()
+    {
+        return $this->isAiTemplateRequest() ? route('ai-template.sells.index') : route('sells.index');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -366,7 +371,7 @@ class SellPosController extends Controller
         $business_id = request()->session()->get('user.business_id');
         $business_details = $this->businessUtil->getDetails($business_id);
         $pos_settings = empty($business_details->pos_settings) ? $this->businessUtil->defaultPosSettings() : json_decode($business_details->pos_settings, true);
-        return view('sale_pos.display', compact('pos_settings'));
+        return view($this->isAiTemplateRequest() ? $this->viewPath('display') : 'sale_pos.display', compact('pos_settings'));
     }
 
     /**
@@ -424,7 +429,7 @@ class SellPosController extends Controller
                     return $output;
                 } else {
                     return redirect()
-                        ->action([\App\Http\Controllers\SellController::class, 'index'])
+                        ->to($this->indexUrl())
                         ->with('status', $output);
                 }
             }
@@ -769,7 +774,7 @@ class SellPosController extends Controller
                 }
 
                 return redirect()
-                    ->action([\App\Http\Controllers\SellController::class, 'index'])
+                    ->to($this->indexUrl())
                     ->with('status', $output);
             }
         }
@@ -1172,7 +1177,7 @@ class SellPosController extends Controller
         $users = config('constants.enable_contact_assign') ? User::forDropdown($business_id, false, false, false, true) : [];
         $only_payment = request()->segment(2) == 'payment';
 
-        return view('sale_pos.edit')
+        return view($this->isAiTemplateRequest() ? $this->viewPath('edit') : 'sale_pos.edit')
             ->with(compact('business_details', 'taxes', 'payment_types', 'walk_in_customer',
                 'sell_details', 'transaction', 'payment_lines', 'location_printer_type', 'shortcuts',
                 'commission_agent', 'categories', 'pos_settings', 'change_return', 'types', 'customer_groups',
@@ -1257,7 +1262,7 @@ class SellPosController extends Controller
                         return $output;
                     } else {
                         return redirect()
-                            ->action([\App\Http\Controllers\SellController::class, 'index'])
+                            ->to($this->indexUrl())
                             ->with('status', $output);
                     }
                 }
@@ -1596,7 +1601,7 @@ class SellPosController extends Controller
                 }
 
                 return redirect()
-                    ->action([\App\Http\Controllers\SellController::class, 'index'])
+                    ->to($this->indexUrl())
                     ->with('status', $output);
             }
         }
@@ -2699,7 +2704,7 @@ class SellPosController extends Controller
                 ];
 
                 return redirect()
-                    ->action([\App\Http\Controllers\SellController::class, 'index'])
+                    ->to($this->indexUrl())
                     ->with('status', $output);
             }
 
@@ -2730,7 +2735,7 @@ class SellPosController extends Controller
         }
 
         return redirect()
-            ->action([\App\Http\Controllers\SellController::class, 'index'])
+            ->to($this->indexUrl())
             ->with('status', $output);
     }
 

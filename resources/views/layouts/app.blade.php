@@ -1,8 +1,8 @@
 @inject('request', 'Illuminate\Http\Request')
 
 @if (
-    $request->segment(1) == 'pos' &&
-        ($request->segment(2) == 'create' || $request->segment(3) == 'edit' || $request->segment(2) == 'payment'))
+    ($request->segment(1) == 'pos' || ($request->segment(1) == 'ai-template' && $request->segment(2) == 'pos')) &&
+        ($request->segment(2) == 'create' || $request->segment(3) == 'edit' || $request->segment(2) == 'payment' || $request->segment(3) == 'create' || $request->segment(4) == 'edit' || $request->segment(3) == 'payment'))
     @php
         $pos_layout = true;
     @endphp
@@ -46,8 +46,8 @@
 
 </head>
 <body
-    class="@if($is_viho_template) viho-template-active @endif tw-font-sans tw-antialiased tw-text-gray-900 tw-bg-gray-100 @if ($pos_layout) hold-transition lockscreen @else hold-transition skin-@if (!empty(session('business.theme_color'))){{ session('business.theme_color') }}@else{{ 'blue-light' }} @endif sidebar-mini @endif" >
-    @if($is_viho_template)
+    class="@if($is_viho_template && !$pos_layout) viho-template-active @endif tw-font-sans tw-antialiased tw-text-gray-900 tw-bg-gray-100 @if ($pos_layout) hold-transition lockscreen @else hold-transition skin-@if (!empty(session('business.theme_color'))){{ session('business.theme_color') }}@else{{ 'blue-light' }} @endif sidebar-mini @endif" >
+    @if($is_viho_template && !$pos_layout)
         <div class="page-wrapper compact-wrapper" id="pageWrapper">
             @if($request->segment(1) != 'customer-display' && !$pos_layout)
                 <div class="page-main-header">
@@ -99,10 +99,10 @@
             <input type="hidden" id="status_span" data-status="{{ session('status.success') }}"
                 data-msg="{{ session('status.msg') }}">
         @endif
-        @if($is_viho_template)
+        @if($is_viho_template && !$pos_layout)
             <div class="page-body">
         @endif
-        <main class="@if($is_viho_template) viho-main-layout @endif tw-flex tw-flex-col tw-flex-1 tw-h-full tw-min-w-0 tw-bg-gray-100">
+        <main class="@if($is_viho_template && !$pos_layout) viho-main-layout @endif tw-flex tw-flex-col tw-flex-1 tw-h-full tw-min-w-0 tw-bg-gray-100">
             @if(!$is_viho_template)
                 @if($request->segment(1) != 'customer-display' && !$pos_layout)
                     @if (view()->exists($layout_header_view))
@@ -144,7 +144,7 @@
             <section class="invoice print_section" id="receipt_section">
             </section>
         </main>
-        @if($is_viho_template)
+        @if($is_viho_template && !$pos_layout)
             </div>
         @endif
 
@@ -186,7 +186,7 @@
 
             <div class="overlay tw-hidden"></div>
         </div>
-    @if($is_viho_template)
+    @if($is_viho_template && !$pos_layout)
             </div>
         </div>
     @else

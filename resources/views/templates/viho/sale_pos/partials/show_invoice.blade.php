@@ -14,7 +14,7 @@
                  aria-label="Print"><i class="fas fa-print"></i> @lang( 'messages.print' )
             </button>
             @auth
-                <a href="{{action([\App\Http\Controllers\SellController::class, 'index'])}}" class="tw-dw-btn tw-dw-btn-success tw-text-white no-print tw-dw-btn-sm" ><i class="fas fa-backward"></i>
+                <a href="{{route('ai-template.sells.index')}}" class="tw-dw-btn tw-dw-btn-success tw-text-white no-print tw-dw-btn-sm" ><i class="fas fa-backward"></i>
                 </a>
             @endauth
         </div>

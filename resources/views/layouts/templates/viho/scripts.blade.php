@@ -4,9 +4,11 @@
     };
 @endphp
 
+@if(!(isset($pos_layout) && $pos_layout))
 <script src="{{ $template_asset('js/icons/feather-icon/feather.min.js') }}"></script>
 <script>
     if (window.feather) {
         feather.replace();
     }
 </script>
+@endif
