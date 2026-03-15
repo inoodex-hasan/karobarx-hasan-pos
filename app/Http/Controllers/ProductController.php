@@ -203,6 +203,37 @@ class ProductController extends Controller
                     'action',
                     function ($row) use ($selling_price_group_count) {
                         $is_ai_template = $this->isAiTemplateRequest() || request()->is('ai-template/*');
+                        $base_url = url('/');
+                        $ai_url = url('/ai-template');
+                        
+                        $action_labels_show = action([\App\Http\Controllers\LabelsController::class, 'show']);
+                        $action_product_view = action([\App\Http\Controllers\ProductController::class, 'view'], [$row->id]);
+                        $action_product_edit = action([\App\Http\Controllers\ProductController::class, 'edit'], [$row->id]);
+                        $action_product_destroy = action([\App\Http\Controllers\ProductController::class, 'destroy'], [$row->id]);
+                        $action_product_activate = action([\App\Http\Controllers\ProductController::class, 'activate'], [$row->id]);
+                        $action_opening_stock = action([\App\Http\Controllers\OpeningStockController::class, 'add'], ['product_id' => $row->id]);
+                        $action_stock_history = action([\App\Http\Controllers\ProductController::class, 'productStockHistory'], [$row->id]);
+                        $action_add_selling_prices = action([\App\Http\Controllers\ProductController::class, 'addSellingPrices'], [$row->id]);
+                        $action_create_duplicate = action([\App\Http\Controllers\ProductController::class, 'create'], ['d' => $row->id]);
+
+                        if ($is_ai_template) {
+                            $replace_url = function($url) use ($base_url, $ai_url) {
+                                if (strpos($url, $ai_url) !== false) {
+                                    return $url;
+                                }
+                                return str_replace($base_url, $ai_url, $url);
+                            };
+
+                            $action_labels_show = $replace_url($action_labels_show);
+                            $action_product_view = $replace_url($action_product_view);
+                            $action_product_edit = $replace_url($action_product_edit);
+                            $action_product_destroy = $replace_url($action_product_destroy);
+                            $action_product_activate = $replace_url($action_product_activate);
+                            $action_opening_stock = $replace_url($action_opening_stock);
+                            $action_stock_history = $replace_url($action_stock_history);
+                            $action_add_selling_prices = $replace_url($action_add_selling_prices);
+                            $action_create_duplicate = $replace_url($action_create_duplicate);
+                        }
                         
                         if ($is_ai_template) {
                             $html = '<div class="btn-group">
@@ -211,52 +242,52 @@ class ProductController extends Controller
                                     <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                     <span class="sr-only">'.e(__('messages.actions')).'</span>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-left" role="menu"><li><a href="'.action([\App\Http\Controllers\LabelsController::class, 'show']).'?product_id='.$row->id.'" data-toggle="tooltip" title="'.__('lang_v1.label_help').'"><i class="fa fa-barcode"></i> '.__('barcode.labels').'</a></li>';
+                                <ul class="dropdown-menu dropdown-menu-left" role="menu"><li><a href="'.$action_labels_show.'?product_id='.$row->id.'" data-toggle="tooltip" title="'.__('lang_v1.label_help').'"><i class="fa fa-barcode"></i> '.__('barcode.labels').'</a></li>';
                         } else {
                             $html =
-                            '<div class="btn-group"><button type="button" class="tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'.__('messages.actions').'<span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button><ul class="dropdown-menu dropdown-menu-left" role="menu"><li><a href="'.action([\App\Http\Controllers\LabelsController::class, 'show']).'?product_id='.$row->id.'" data-toggle="tooltip" title="'.__('lang_v1.label_help').'"><i class="fa fa-barcode"></i> '.__('barcode.labels').'</a></li>';
+                            '<div class="btn-group"><button type="button" class="tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline  tw-dw-btn-info tw-w-max dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'.__('messages.actions').'<span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button><ul class="dropdown-menu dropdown-menu-left" role="menu"><li><a href="'.$action_labels_show.'?product_id='.$row->id.'" data-toggle="tooltip" title="'.__('lang_v1.label_help').'"><i class="fa fa-barcode"></i> '.__('barcode.labels').'</a></li>';
                         }
 
                         if (auth()->user()->can('product.view')) {
                             $html .=
-                            '<li><a href="'.action([\App\Http\Controllers\ProductController::class, 'view'], [$row->id]).'" class="view-product"><i class="fa fa-eye"></i> '.__('messages.view').'</a></li>';
+                            '<li><a href="'.$action_product_view.'" class="view-product"><i class="fa fa-eye"></i> '.__('messages.view').'</a></li>';
                         }
 
                         if (auth()->user()->can('product.update')) {
                             $html .=
-                            '<li><a href="'.action([\App\Http\Controllers\ProductController::class, 'edit'], [$row->id]).'"><i class="glyphicon glyphicon-edit"></i> '.__('messages.edit').'</a></li>';
+                            '<li><a href="'.$action_product_edit.'"><i class="glyphicon glyphicon-edit"></i> '.__('messages.edit').'</a></li>';
                         }
 
                         if (auth()->user()->can('product.delete')) {
                             $html .=
-                            '<li><a href="'.action([\App\Http\Controllers\ProductController::class, 'destroy'], [$row->id]).'" class="delete-product"><i class="fa fa-trash"></i> '.__('messages.delete').'</a></li>';
+                            '<li><a href="'.$action_product_destroy.'" class="delete-product"><i class="fa fa-trash"></i> '.__('messages.delete').'</a></li>';
                         }
 
                         if ($row->is_inactive == 1) {
                             $html .=
-                            '<li><a href="'.action([\App\Http\Controllers\ProductController::class, 'activate'], [$row->id]).'" class="activate-product"><i class="fas fa-check-circle"></i> '.__('lang_v1.reactivate').'</a></li>';
+                            '<li><a href="'.$action_product_activate.'" class="activate-product"><i class="fas fa-check-circle"></i> '.__('lang_v1.reactivate').'</a></li>';
                         }
 
                         $html .= '<li class="divider"></li>';
 
                         if ($row->enable_stock == 1 && auth()->user()->can('product.opening_stock')) {
                             $html .=
-                            '<li><a href="#" data-href="'.action([\App\Http\Controllers\OpeningStockController::class, 'add'], ['product_id' => $row->id]).'" class="add-opening-stock"><i class="fa fa-database"></i> '.__('lang_v1.add_edit_opening_stock').'</a></li>';
+                            '<li><a href="#" data-href="'.$action_opening_stock.'" class="add-opening-stock"><i class="fa fa-database"></i> '.__('lang_v1.add_edit_opening_stock').'</a></li>';
                         }
 
                         if (auth()->user()->can('product.view')) {
                             $html .=
-                            '<li><a href="'.action([\App\Http\Controllers\ProductController::class, 'productStockHistory'], [$row->id]).'"><i class="fas fa-history"></i> '.__('lang_v1.product_stock_history').'</a></li>';
+                            '<li><a href="'.$action_stock_history.'"><i class="fas fa-history"></i> '.__('lang_v1.product_stock_history').'</a></li>';
                         }
 
                         if (auth()->user()->can('product.create')) {
                             if ($selling_price_group_count > 0) {
                                 $html .=
-                                '<li><a href="'.action([\App\Http\Controllers\ProductController::class, 'addSellingPrices'], [$row->id]).'"><i class="fas fa-money-bill-alt"></i> '.__('lang_v1.add_selling_price_group_prices').'</a></li>';
+                                '<li><a href="'.$action_add_selling_prices.'"><i class="fas fa-money-bill-alt"></i> '.__('lang_v1.add_selling_price_group_prices').'</a></li>';
                             }
 
                             $html .=
-                                '<li><a href="'.action([\App\Http\Controllers\ProductController::class, 'create'], ['d' => $row->id]).'"><i class="fa fa-copy"></i> '.__('lang_v1.duplicate_product').'</a></li>';
+                                '<li><a href="'.$action_create_duplicate.'"><i class="fa fa-copy"></i> '.__('lang_v1.duplicate_product').'</a></li>';
                         }
 
                         if (! empty($row->media->first())) {

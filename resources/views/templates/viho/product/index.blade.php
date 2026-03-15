@@ -260,7 +260,7 @@
     <div class="modal fade product_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
     </div>
 
-    <div class="modal fade" id="view_product_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal" id="view_product_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
     </div>
 
     <div class="modal fade" id="opening_stock_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
@@ -688,24 +688,44 @@
             @endif
                 });
 
-        $(document)
-            .off('shown.bs.modal.vihoProducts', 'div.view_product_modal, div.view_modal, #view_product_modal')
-            .on('shown.bs.modal.vihoProducts', 'div.view_product_modal, div.view_modal, #view_product_modal',
-                function () {
-                    var div = $(this).find('#view_product_stock_details');
-                    if (div.length) {
-                        $.ajax({
-                            url: "{{ action([\App\Http\Controllers\ReportController::class, 'getStockReport']) }}" +
-                                '?for=view_product&product_id=' + div.data('product_id'),
-                            dataType: 'html',
-                            success: function (result) {
-                                div.html(result);
-                                __currency_convert_recursively(div);
-                            },
-                        });
-                    }
-                    __currency_convert_recursively($(this));
+            $(document)
+                .off('shown.bs.modal.vihoProducts', 'div.view_product_modal, div.view_modal, #view_product_modal')
+                .on('shown.bs.modal.vihoProducts', 'div.view_product_modal, div.view_modal, #view_product_modal',
+                    function () {
+                        var div = $(this).find('#view_product_stock_details');
+                        if (div.length) {
+                            $.ajax({
+                                url: "{{ action([\App\Http\Controllers\ReportController::class, 'getStockReport']) }}" +
+                                    '?for=view_product&product_id=' + div.data('product_id'),
+                                dataType: 'html',
+                                success: function (result) {
+                                    div.html(result);
+                                    if (typeof __currency_convert_recursively === 'function') {
+                                        __currency_convert_recursively(div);
+                                    }
+                                },
+                            });
+                        }
+                        if (typeof __currency_convert_recursively === 'function') {
+                            __currency_convert_recursively($(this));
+                        }
+                    });
+
+            $(document).on('click', 'a.view-product', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: $(this).attr('href'),
+                    dataType: 'html',
+                    success: function(result) {
+                        $('#view_product_modal')
+                            .html(result)
+                            .modal('show');
+                        if (typeof __currency_convert_recursively === 'function') {
+                            __currency_convert_recursively($('#view_product_modal'));
+                        }
+                    },
                 });
+            });
 
         var data_table_initailized = false;
         $('a[data-bs-toggle="tab"]')
