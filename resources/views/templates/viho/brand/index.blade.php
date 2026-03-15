@@ -76,11 +76,11 @@
                     processing: true,
                     serverSide: true,
                     ajax: '{{ route('ai-template.brands.index') }}',
-                    columnDefs: [{
-                        targets: 2,
-                        orderable: false,
-                        searchable: false
-                    }]
+                    columns: [
+                        { data: 'name', name: 'name' },
+                        { data: 'description', name: 'description' },
+                        { data: 'action', name: 'action', orderable: false, searchable: false },
+                    ]
                 });
             }
 

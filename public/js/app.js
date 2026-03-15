@@ -101,12 +101,10 @@ $(document).ready(function () {
         serverSide: true,
         fixedHeader: false,
         ajax: brands_ajax_url,
-        columnDefs: [
-            {
-                targets: 2,
-                orderable: false,
-                searchable: false,
-            },
+        columns: [
+            { data: 'name', name: 'name' },
+            { data: 'description', name: 'description' },
+            { data: 'action', name: 'action', orderable: false, searchable: false },
         ],
     });
 
