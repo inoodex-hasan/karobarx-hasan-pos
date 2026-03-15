@@ -287,10 +287,11 @@
 
             // capital_account_table
             capital_account_table = $('#capital_account_table').DataTable({
+                destroy: true,
                 processing: true,
                 serverSide: true,
                 fixedHeader:false,
-                ajax: '/account/account?account_type=capital',
+                ajax: '{{ route("account.index", ["account_type" => "capital"]) }}',
                 columnDefs: [{
                     "targets": 5,
                     "orderable": false,
@@ -324,11 +325,12 @@
             });
             // capital_account_table
             other_account_table = $('#other_account_table').DataTable({
+                destroy: true,
                 processing: true,
                 serverSide: true,
                 fixedHeader:false,
                 ajax: {
-                    url: '/account/account?account_type=other',
+                    url: '{{ route("account.index", ["account_type" => "other"]) }}',
                     data: function(d) {
                         d.account_status = $('#account_status').val();
                     }

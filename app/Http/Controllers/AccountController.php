@@ -112,20 +112,34 @@ class AccountController extends Controller
                 // ->whereNull('AT.deleted_at')
                 ->groupBy('accounts.id');
 
+            $route_name_prefix = $this->isAiTemplateRequest() ? 'ai-template.' : '';
             return DataTables::of($accounts)
                             ->addColumn(
                                 'action',
-                                '<button data-href="{{action(\'App\Http\Controllers\AccountController@edit\',[$id])}}" data-container=".account_model" class="tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline tw-dw-btn-primary btn-modal"><i class="glyphicon glyphicon-edit"></i> @lang("messages.edit")</button>
-                                <a href="{{action(\'App\Http\Controllers\AccountController@show\',[$id])}}" class="tw-dw-btn tw-dw-btn-outline tw-dw-btn-xs tw-dw-btn-warning btn-xs"><i class="fa fa-book"></i> @lang("account.account_book")</a>&nbsp;
-                                @if($is_closed == 0)
-                                <button data-href="{{action(\'App\Http\Controllers\AccountController@getFundTransfer\',[$id])}}" class="tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline tw-dw-btn-info btn-modal" data-container=".view_modal"><i class="fas fa-calculator"></i> @lang("account.fund_transfer")</button>
+                                function ($row) use ($route_name_prefix) {
+                                    $html = '<button data-href="' . route($route_name_prefix . 'account.edit', [$row->id]) . '" data-container=".account_model" class="tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline tw-dw-btn-primary btn-modal"><i class="glyphicon glyphicon-edit"></i> ' . __("messages.edit") . '</button>
+                                    <a href="' . route($route_name_prefix . 'account.show', [$row->id]) . '" class="tw-dw-btn tw-dw-btn-outline tw-dw-btn-xs tw-dw-btn-warning btn-xs"><i class="fa fa-book"></i> ' . __("account.account_book") . '</a>&nbsp;';
 
-                                <button data-href="{{action(\'App\Http\Controllers\AccountController@getDeposit\',[$id])}}" class="tw-dw-btn tw-dw-btn-outline tw-dw-btn-xs tw-dw-btn-success btn-modal" data-container=".view_modal"><i class="fas fa-money-bill-alt"></i> @lang("account.deposit")</button>
+                                    if ($row->is_closed == 0) {
+                                        if (Route::has($route_name_prefix . 'account.fund-transfer')) {
+                                            $html .= '<button data-href="' . route($route_name_prefix . 'account.fund-transfer', [$row->id]) . '" class="tw-dw-btn tw-dw-btn-xs tw-dw-btn-outline tw-dw-btn-info btn-modal" data-container=".view_modal"><i class="fas fa-calculator"></i> ' . __("account.fund_transfer") . '</button>';
+                                        }
 
-                                <button data-url="{{action(\'App\Http\Controllers\AccountController@close\',[$id])}}" class="tw-dw-btn tw-dw-btn-outline tw-dw-btn-xs tw-dw-btn-error close_account"><i class="fa fa-power-off"></i> @lang("messages.close")</button>
-                                @elseif($is_closed == 1)
-                                    <button data-url="{{action(\'App\Http\Controllers\AccountController@activate\',[$id])}}" class="tw-dw-btn tw-dw-btn-outline tw-dw-btn-xs tw-dw-btn-success activate_account"><i class="fa fa-power-off"></i> @lang("messages.activate")</button>
-                                @endif'
+                                        if (Route::has($route_name_prefix . 'account.deposit')) {
+                                            $html .= '<button data-href="' . route($route_name_prefix . 'account.deposit', [$row->id]) . '" class="tw-dw-btn tw-dw-btn-outline tw-dw-btn-xs tw-dw-btn-success btn-modal" data-container=".view_modal"><i class="fas fa-money-bill-alt"></i> ' . __("account.deposit") . '</button>';
+                                        }
+
+                                        if (Route::has($route_name_prefix . 'account.close')) {
+                                            $html .= '<button data-url="' . route($route_name_prefix . 'account.close', [$row->id]) . '" class="tw-dw-btn tw-dw-btn-outline tw-dw-btn-xs tw-dw-btn-error close_account"><i class="fa fa-power-off"></i> ' . __("messages.close") . '</button>';
+                                        }
+                                    } else if ($row->is_closed == 1) {
+                                        if (Route::has($route_name_prefix . 'account.activate')) {
+                                            $html .= '<button data-url="' . route($route_name_prefix . 'account.activate', [$row->id]) . '" class="tw-dw-btn tw-dw-btn-outline tw-dw-btn-xs tw-dw-btn-success activate_account"><i class="fa fa-power-off"></i> ' . __("messages.activate") . '</button>';
+                                        }
+                                    }
+
+                                    return $html;
+                                }
                             )
                             ->editColumn('name', function ($row) {
                                 if ($row->is_closed == 1) {

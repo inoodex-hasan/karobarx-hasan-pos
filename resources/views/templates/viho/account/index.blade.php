@@ -68,7 +68,7 @@
                                             <div class="col-md-8">
                                                     <button type="button" class="tw-dw-btn tw-bg-gradient-to-r tw-from-indigo-600 tw-to-blue-500 tw-font-bold tw-text-white tw-border-none tw-rounded-full btn-modal pull-right"
                                                         data-container=".account_model"
-                                                        data-href="{{ action([\App\Http\Controllers\AccountController::class, 'create']) }}">
+                                                        data-href="{{ route('ai-template.account.create') }}">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                                             class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
@@ -287,10 +287,11 @@
 
             // capital_account_table
             capital_account_table = $('#capital_account_table').DataTable({
+                destroy: true,
                 processing: true,
                 serverSide: true,
                 fixedHeader:false,
-                ajax: '/account/account?account_type=capital',
+                ajax: '{{ route("ai-template.account.index", ["account_type" => "capital"]) }}',
                 columnDefs: [{
                     "targets": 5,
                     "orderable": false,
@@ -324,11 +325,12 @@
             });
             // capital_account_table
             other_account_table = $('#other_account_table').DataTable({
+                destroy: true,
                 processing: true,
                 serverSide: true,
                 fixedHeader:false,
                 ajax: {
-                    url: '/account/account?account_type=other',
+                    url: '{{ route("ai-template.account.index", ["account_type" => "other"]) }}',
                     data: function(d) {
                         d.account_status = $('#account_status').val();
                     }
