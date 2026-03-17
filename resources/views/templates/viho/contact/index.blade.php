@@ -16,13 +16,17 @@
         <div class="page-header">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3>@lang('lang_v1.' . $type . 's') <small class="text-muted">@lang('contact.manage_your_contact', ['contacts' => __('lang_v1.' . $type . 's')])</small></h3>
+                    <h3>@lang('lang_v1.' . $type . 's') <small
+                            class="text-muted">@lang('contact.manage_your_contact', ['contacts' => __('lang_v1.' . $type . 's')])</small>
+                    </h3>
                 </div>
                 <div class="col-sm-6 text-right">
-                    @if (auth()->user()->can('supplier.create') ||
+                    @if (
+                            auth()->user()->can('supplier.create') ||
                             auth()->user()->can('customer.create') ||
                             auth()->user()->can('supplier.view_own') ||
-                            auth()->user()->can('customer.view_own'))
+                            auth()->user()->can('customer.view_own')
+                        )
                         <a class="btn btn-primary btn-sm btn-modal"
                             data-href="{{ route('ai-template.contacts.create', ['type' => $type]) }}"
                             data-container=".contact_modal">
@@ -47,7 +51,8 @@
                                 <div class="form-group">
                                     <div class="checkbox">
                                         <label>
-                                            {!! Form::checkbox('has_sell_due', 1, false, ['class' => 'input-icheck', 'id' => 'has_sell_due']) !!} <strong>@lang('lang_v1.sell_due')</strong>
+                                            {!! Form::checkbox('has_sell_due', 1, false, ['class' => 'input-icheck', 'id' => 'has_sell_due']) !!}
+                                            <strong>@lang('lang_v1.sell_due')</strong>
                                         </label>
                                     </div>
                                 </div>
@@ -56,7 +61,8 @@
                                 <div class="form-group">
                                     <div class="checkbox">
                                         <label>
-                                            {!! Form::checkbox('has_sell_return', 1, false, ['class' => 'input-icheck', 'id' => 'has_sell_return']) !!} <strong>@lang('lang_v1.sell_return')</strong>
+                                            {!! Form::checkbox('has_sell_return', 1, false, ['class' => 'input-icheck', 'id' => 'has_sell_return']) !!}
+                                            <strong>@lang('lang_v1.sell_return')</strong>
                                         </label>
                                     </div>
                                 </div>
@@ -66,7 +72,8 @@
                                 <div class="form-group">
                                     <div class="checkbox">
                                         <label>
-                                            {!! Form::checkbox('has_purchase_due', 1, false, ['class' => 'input-icheck', 'id' => 'has_purchase_due']) !!} <strong>@lang('report.purchase_due')</strong>
+                                            {!! Form::checkbox('has_purchase_due', 1, false, ['class' => 'input-icheck', 'id' => 'has_purchase_due']) !!}
+                                            <strong>@lang('report.purchase_due')</strong>
                                         </label>
                                     </div>
                                 </div>
@@ -75,7 +82,8 @@
                                 <div class="form-group">
                                     <div class="checkbox">
                                         <label>
-                                            {!! Form::checkbox('has_purchase_return', 1, false, ['class' => 'input-icheck', 'id' => 'has_purchase_return']) !!} <strong>@lang('lang_v1.purchase_return')</strong>
+                                            {!! Form::checkbox('has_purchase_return', 1, false, ['class' => 'input-icheck', 'id' => 'has_purchase_return']) !!}
+                                            <strong>@lang('lang_v1.purchase_return')</strong>
                                         </label>
                                     </div>
                                 </div>
@@ -85,7 +93,8 @@
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
-                                        {!! Form::checkbox('has_advance_balance', 1, false, ['class' => 'input-icheck', 'id' => 'has_advance_balance']) !!} <strong>@lang('lang_v1.advance_balance')</strong>
+                                        {!! Form::checkbox('has_advance_balance', 1, false, ['class' => 'input-icheck', 'id' => 'has_advance_balance']) !!}
+                                        <strong>@lang('lang_v1.advance_balance')</strong>
                                     </label>
                                 </div>
                             </div>
@@ -94,35 +103,36 @@
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
-                                        {!! Form::checkbox('has_opening_balance', 1, false, ['class' => 'input-icheck', 'id' => 'has_opening_balance']) !!} <strong>@lang('lang_v1.opening_balance')</strong>
+                                        {!! Form::checkbox('has_opening_balance', 1, false, ['class' => 'input-icheck', 'id' => 'has_opening_balance']) !!}
+                                        <strong>@lang('lang_v1.opening_balance')</strong>
                                     </label>
                                 </div>
                             </div>
                         </div>
                         @if ($type == 'customer')
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="has_no_sell_from">@lang('lang_v1.has_no_sell_from'):</label>
-                                    {!! Form::select(
-                                        'has_no_sell_from',
-                                        [
-                                            'one_month' => __('lang_v1.one_month'),
-                                            'three_months' => __('lang_v1.three_months'),
-                                            'six_months' => __('lang_v1.six_months'),
-                                            'one_year' => __('lang_v1.one_year'),
-                                        ],
-                                        null,
-                                        ['class' => 'form-control', 'id' => 'has_no_sell_from', 'placeholder' => __('messages.please_select')],
-                                    ) !!}
-                                </div>
-                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="has_no_sell_from">@lang('lang_v1.has_no_sell_from'):</label>
+                                                    {!! Form::select(
+                                'has_no_sell_from',
+                                [
+                                    'one_month' => __('lang_v1.one_month'),
+                                    'three_months' => __('lang_v1.three_months'),
+                                    'six_months' => __('lang_v1.six_months'),
+                                    'one_year' => __('lang_v1.one_year'),
+                                ],
+                                null,
+                                ['class' => 'form-control', 'id' => 'has_no_sell_from', 'placeholder' => __('messages.please_select')],
+                            ) !!}
+                                                </div>
+                                            </div>
 
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="cg_filter">@lang('lang_v1.customer_group'):</label>
-                                    {!! Form::select('cg_filter', $customer_groups, null, ['class' => 'form-control', 'id' => 'cg_filter']) !!}
-                                </div>
-                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="cg_filter">@lang('lang_v1.customer_group'):</label>
+                                                    {!! Form::select('cg_filter', $customer_groups, null, ['class' => 'form-control', 'id' => 'cg_filter']) !!}
+                                                </div>
+                                            </div>
                         @endif
 
                         @if (config('constants.enable_contact_assign') === true)
@@ -138,11 +148,11 @@
                             <div class="form-group">
                                 <label for="status_filter">@lang('sale.status'):</label>
                                 {!! Form::select(
-                                    'status_filter',
-                                    ['active' => __('business.is_active'), 'inactive' => __('lang_v1.inactive')],
-                                    null,
-                                    ['class' => 'form-control', 'id' => 'status_filter', 'placeholder' => __('lang_v1.none')],
-                                ) !!}
+        'status_filter',
+        ['active' => __('business.is_active'), 'inactive' => __('lang_v1.inactive')],
+        null,
+        ['class' => 'form-control', 'id' => 'status_filter', 'placeholder' => __('lang_v1.none')],
+    ) !!}
                             </div>
                         </div>
                     </div>
@@ -243,13 +253,8 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td @if ($type == 'supplier') colspan="6"
-                                @elseif($type == 'customer')
-                                    @if ($reward_enabled)
-                                        colspan="9"
-                                    @else
-                                        colspan="8" @endif
-                                        @endif>
+                                    <td @if ($type == 'supplier') colspan="6" @elseif($type == 'customer') @if ($reward_enabled)
+                                    colspan="9" @else colspan="8" @endif @endif>
                                         <strong>
                                             @lang('sale.total'):
                                         </strong>
@@ -300,7 +305,7 @@
                 });
 
                 if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(position) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
                         initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                         map.setCenter(initialLocation);
                     });
@@ -310,22 +315,22 @@
                 var searchBox = new google.maps.places.SearchBox(input);
                 map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-                map.addListener('bounds_changed', function() {
+                map.addListener('bounds_changed', function () {
                     searchBox.setBounds(map.getBounds());
                 });
 
                 var markers = [];
-                searchBox.addListener('places_changed', function() {
+                searchBox.addListener('places_changed', function () {
                     var places = searchBox.getPlaces();
                     if (places.length == 0) {
                         return;
                     }
-                    markers.forEach(function(marker) {
+                    markers.forEach(function (marker) {
                         marker.setMap(null);
                     });
                     markers = [];
                     var bounds = new google.maps.LatLngBounds();
-                    places.forEach(function(place) {
+                    places.forEach(function (place) {
                         if (!place.geometry) {
                             console.log("Returned place contains no geometry");
                             return;
@@ -357,15 +362,15 @@
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key={{ $api_key }}&libraries=places" async defer></script>
         <script type="text/javascript">
-            $(document).on('shown.bs.modal', '.contact_modal', function(e) {
+            $(document).on('shown.bs.modal', '.contact_modal', function (e) {
                 initAutocomplete();
             });
         </script>
     @endif
 
     <script type="text/javascript">
-        $(document).ready(function() {
-            var destroyContactTable = function() {
+        $(document).ready(function () {
+            var destroyContactTable = function () {
                 if (!window.jQuery || !$.fn || !$.fn.DataTable) {
                     return;
                 }
@@ -428,15 +433,43 @@
             destroyContactTable();
 
             contact_table = $('#contact_table').DataTable({
+                retrieve: true,
                 processing: true,
                 serverSide: true,
-                scrollY: "75vh",
+                fixedHeader: false,
                 scrollX: true,
                 scrollCollapse: true,
-                dom: "<'row align-items-center mb-3'<'col-sm-12 col-md-2'l><'col-sm-12 col-md-8 text-center'B><'col-sm-12 col-md-2 text-md-end'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 text-md-end'p>>",
+                dom: "<'row align-items-center mb-3'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-6 text-center'B><'col-sm-12 col-md-3 text-md-end'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 text-md-end'p>>",
+                buttons: [
+                    {
+                        extend: 'csv',
+                        className: 'btn btn-outline-primary btn-xs',
+                        text: '<i class="fa fa-file-csv" aria-hidden="true"></i> Export CSV'
+                    },
+                    {
+                        extend: 'excel',
+                        className: 'btn btn-outline-primary btn-xs',
+                        text: '<i class="fa fa-file-excel" aria-hidden="true"></i> Export Excel'
+                    },
+                    {
+                        extend: 'print',
+                        className: 'btn btn-outline-primary btn-xs',
+                        text: '<i class="fa fa-print" aria-hidden="true"></i> Print'
+                    },
+                    {
+                        extend: 'colvis',
+                        className: 'btn btn-outline-primary btn-xs',
+                        text: '<i class="fa fa-columns" aria-hidden="true"></i> Column visibility'
+                    },
+                    {
+                        extend: 'pdf',
+                        className: 'btn btn-outline-primary btn-xs',
+                        text: '<i class="fa fa-file-pdf" aria-hidden="true"></i> Export PDF'
+                    }
+                ],
                 "ajax": {
                     url: "{{ route('ai-template.contacts.index') }}",
-                    data: function(d) {
+                    data: function (d) {
                         d.type = $('#contact_type').val();
                         d.has_sell_due = $('#has_sell_due').is(':checked');
                         d.has_sell_return = $('#has_sell_return').is(':checked');
@@ -453,10 +486,10 @@
                 },
                 aaSorting: [[1, 'desc']],
                 columns: columns,
-                fnDrawCallback: function(oSettings) {
+                fnDrawCallback: function (oSettings) {
                     __currency_convert_recursively($('#contact_table'));
                 },
-                "footerCallback": function(row, data, start, end, display) {
+                "footerCallback": function (row, data, start, end, display) {
                     var footer_contact_due = 0;
                     var footer_contact_return_due = 0;
                     for (var r in data) {
@@ -466,24 +499,26 @@
                     $('.footer_contact_due').html(__currency_trans_from_en(footer_contact_due));
                     $('.footer_contact_return_due').html(__currency_trans_from_en(footer_contact_return_due));
                 },
-                initComplete: function() {
-                    var relocate = function() {
+                initComplete: function () {
+                    var relocate = function () {
                         var $wrapper = $('#contact_table_wrapper');
                         if ($wrapper.length < 1) return;
 
                         var $length = $wrapper.find('.dataTables_length');
+                        var $buttons = $wrapper.find('.dt-buttons');
                         var $filter = $wrapper.find('.dataTables_filter');
                         var $info = $wrapper.find('.dataTables_info');
                         var $paginate = $wrapper.find('.dataTables_paginate');
 
                         if ($length.length) $('#contact_dt_length').empty().append($length);
+                        if ($buttons.length) $('#contact_dt_buttons').empty().append($buttons);
                         if ($filter.length) $('#contact_dt_filter').empty().append($filter);
                         if ($info.length) $('#contact_dt_info').empty().append($info);
                         if ($paginate.length) $('#contact_dt_paginate').empty().append($paginate);
                     };
 
                     relocate();
-                    this.api().on('draw.dt', function() {
+                    this.api().on('draw.dt', function () {
                         relocate();
                     });
                 }
@@ -499,7 +534,7 @@
                 .on(
                     'change.vihoContacts',
                     '#has_sell_due, #has_sell_return, #has_purchase_due, #has_purchase_return, #has_advance_balance, #has_opening_balance, #has_no_sell_from, #cg_filter, #status_filter, #assigned_to',
-                    function() {
+                    function () {
                         contact_table.ajax.reload();
                     }
                 );
@@ -518,11 +553,66 @@
             width: 100% !important;
         }
 
+        .dataTables_length label {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+            font-weight: 400 !important;
+            margin-bottom: 0 !important;
+            white-space: nowrap !important;
+        }
+
+        .dataTables_length select {
+            width: auto !important;
+            height: 30px !important;
+            padding: 0 10px !important;
+            margin: 0 !important;
+            font-size: 13px !important;
+            border-radius: 4px !important;
+            display: inline-block !important;
+        }
+
+        /* Horizontal scroll under table */
+        #contact_table_wrapper .dataTables_scrollBody {
+            display: block !important;
+            width: 100% !important;
+            overflow-x: auto !important;
+        }
+
+        #contact_table {
+            width: 100% !important;
+            margin: 0 !important;
+            display: table !important;
+        }
+
+        /* Ensure the DataTables scroll container allows the horizontal scrollbar to show */
+        .dataTables_wrapper .dataTables_scroll {
+            clear: both;
+        }
+
+        .dataTables_scrollBody::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .dataTables_scrollBody::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .dataTables_scrollBody::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+
+        .dataTables_scrollBody::-webkit-scrollbar-thumb:hover {
+            background: #bbb;
+        }
+
         /* Keep action column compact (prevents wrapping shifting columns) */
         #contact_table td:first-child,
         #contact_table th:first-child {
             white-space: nowrap !important;
-            width: 80px !important;
+            width: 100px !important;
         }
 
         /* Move checkbox and text to the right side of the label */
