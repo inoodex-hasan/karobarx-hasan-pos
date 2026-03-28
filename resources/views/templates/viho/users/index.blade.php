@@ -5,28 +5,23 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <h5 class="mb-0">@lang('user.users')</h5>
-                        </div>
-                        @can('user.create')
-                            <div class="ms-auto">
-                                <a class="btn btn-primary" href="{{ route('ai-template.users.create') }}">
-                                    @lang('messages.add')
-                                </a>
-                            </div>
-                        @endcan
-                    </div>
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0">@lang('user.users')</h5>
+                    @can('user.create')
+                        <a class="btn btn-primary" href="{{ route('ai-template.users.create') }}">
+                            @lang('messages.add')
+                        </a>
+                    @endcan
                 </div>
                 <div class="card-body">
                     @can('user.view')
                         <div class="row align-items-center mb-2" id="users_dt_top">
-                            <div class="col-sm-12 col-md-6" id="users_dt_length"></div>
-                            <div class="col-sm-12 col-md-6 text-md-end" id="users_dt_filter"></div>
+                            <div class="col-sm-12 col-md-3" id="users_dt_length"></div>
+                            <div class="col-sm-12 col-md-6 text-center" id="users_dt_buttons"></div>
+                            <div class="col-sm-12 col-md-3 text-md-end" id="users_dt_filter"></div>
                         </div>
                         <div class="table-responsive">
-                            <table class="display" id="users_table">
+                            <table class="table table-bordered table-striped" id="users_table">
                                 <thead>
                                     <tr>
                                         <th>@lang('business.username')</th>
@@ -53,19 +48,23 @@
 
 @push('styles')
     <style>
-        .dataTables_length select {
-            width: auto !important;
-            display: inline-block !important;
-            padding-right: 30px !important;
-            margin: 0 5px !important;
-            height: 30px !important;
-            font-size: 13px !important;
-            border-radius: 4px !important;
-        }
-
         .dataTables_length label {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 5px !important;
             font-weight: 400 !important;
             margin-bottom: 0 !important;
+            white-space: nowrap !important;
+        }
+
+        .dataTables_length select {
+            width: auto !important;
+            height: 30px !important;
+            padding: 0 10px !important;
+            margin: 0 !important;
+            font-size: 13px !important;
+            border-radius: 4px !important;
+            display: inline-block !important;
         }
 
         /* Full width and alignment refinements */
@@ -108,7 +107,34 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, 'All']
                 ],
-                dom: "<'row align-items-center mb-3'<'col-sm-12 col-md-2'l><'col-sm-12 col-md-8 text-center'B><'col-sm-12 col-md-2 text-md-end'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 text-md-end'p>>",
+                dom: "<'row align-items-center mb-3'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-6 text-center'B><'col-sm-12 col-md-3 text-md-end'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 text-md-end'p>>",
+                buttons: [
+                    {
+                        extend: 'csv',
+                        className: 'btn btn-outline-primary btn-xs',
+                        text: '<i class="fa fa-file-csv" aria-hidden="true"></i> Export CSV'
+                    },
+                    {
+                        extend: 'excel',
+                        className: 'btn btn-outline-primary btn-xs',
+                        text: '<i class="fa fa-file-excel" aria-hidden="true"></i> Export Excel'
+                    },
+                    {
+                        extend: 'print',
+                        className: 'btn btn-outline-primary btn-xs',
+                        text: '<i class="fa fa-print" aria-hidden="true"></i> Print'
+                    },
+                    {
+                        extend: 'colvis',
+                        className: 'btn btn-outline-primary btn-xs',
+                        text: '<i class="fa fa-columns" aria-hidden="true"></i> Column visibility'
+                    },
+                    {
+                        extend: 'pdf',
+                        className: 'btn btn-outline-primary btn-xs',
+                        text: '<i class="fa fa-file-pdf" aria-hidden="true"></i> Export PDF'
+                    }
+                ],
                 ajax: '{{ route('ai-template.users.index') }}',
                 columnDefs: [{
                     "targets": [4],
@@ -145,11 +171,13 @@
                         if ($wrapper.length < 1) return;
 
                         var $length = $wrapper.find('.dataTables_length');
+                        var $buttons = $wrapper.find('.dt-buttons');
                         var $filter = $wrapper.find('.dataTables_filter');
                         var $info = $wrapper.find('.dataTables_info');
                         var $paginate = $wrapper.find('.dataTables_paginate');
 
                         if ($length.length) $('#users_dt_length').empty().append($length);
+                        if ($buttons.length) $('#users_dt_buttons').empty().append($buttons);
                         if ($filter.length) $('#users_dt_filter').empty().append($filter);
                         if ($info.length) $('#users_dt_info').empty().append($info);
                         if ($paginate.length) $('#users_dt_paginate').empty().append($paginate);

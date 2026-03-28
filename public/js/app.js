@@ -1843,75 +1843,32 @@ $(document).ready(function () {
         $('#sales_commission_agent_table').find('tbody').remove();
     }
 
-    var is_ai_template_sales_agent = window.location.pathname.indexOf('/ai-template') === 0;
-    var has_viho_dt_placeholders =
-        $('#sales_agent_dt_length').length ||
-        $('#sales_agent_dt_filter').length ||
-        $('#sales_agent_dt_info').length ||
-        $('#sales_agent_dt_paginate').length;
+    var is_ai_template_sales_agent = window.location && window.location.pathname && window.location.pathname.indexOf('/ai-template') === 0;
 
-    var sales_agent_dom = null;
-    var sales_agent_initComplete = null;
-
-    if (is_ai_template_sales_agent && has_viho_dt_placeholders) {
-        sales_agent_dom =
-            "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6 text-md-end'f>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 text-md-end'p>>";
-
-        sales_agent_initComplete = function () {
-            var relocate = function () {
-                var $wrapper = $('#sales_commission_agent_table_wrapper');
-                if ($wrapper.length < 1) return;
-
-                var $length = $wrapper.find('.dataTables_length');
-                var $filter = $wrapper.find('.dataTables_filter');
-                var $info = $wrapper.find('.dataTables_info');
-                var $paginate = $wrapper.find('.dataTables_paginate');
-
-                if ($length.length) $('#sales_agent_dt_length').empty().append($length);
-                if ($filter.length) $('#sales_agent_dt_filter').empty().append($filter);
-                if ($info.length) $('#sales_agent_dt_info').empty().append($info);
-                if ($paginate.length) $('#sales_agent_dt_paginate').empty().append($paginate);
-            };
-
-            relocate();
-            var api = this.api();
-            api.on('draw.dt', function () {
-                relocate();
-            });
-        };
+    if (!is_ai_template_sales_agent) {
+        var sales_commission_agent_table = $('#sales_commission_agent_table').DataTable({
+            processing: true,
+            serverSide: true,
+            fixedHeader: false,
+            pageLength: 10,
+            ajax: '/sales-commission-agents',
+            columnDefs: [
+                {
+                    targets: 2,
+                    orderable: false,
+                    searchable: false,
+                },
+            ],
+            columns: [
+                { data: 'full_name' },
+                { data: 'email' },
+                { data: 'contact_no' },
+                { data: 'address' },
+                { data: 'cmmsn_percent' },
+                { data: 'action' },
+            ],
+        });
     }
-
-    var sales_commission_agent_table = $('#sales_commission_agent_table').DataTable({
-        processing: true,
-        serverSide: true,
-        fixedHeader: false,
-        pageLength: is_ai_template_sales_agent ? 25 : 10,
-        dom: sales_agent_dom,
-        initComplete: sales_agent_initComplete,
-        ajax: is_ai_template_sales_agent ? '/ai-template/sales-commission-agents' : '/sales-commission-agents',
-        columnDefs: [
-            {
-                targets: 2,
-                orderable: false,
-                searchable: false,
-            },
-        ],
-        columns: [
-            { data: 'full_name' },
-            { data: 'email' },
-            { data: 'contact_no' },
-            { data: 'address' },
-            { data: 'cmmsn_percent' },
-            { data: 'action' },
-        ],
-        drawCallback: function () {
-            if (is_ai_template_sales_agent && typeof feather !== 'undefined') {
-                feather.replace();
-            }
-        },
-    });
     $('div.commission_agent_modal').on('shown.bs.modal', function (e) {
         $('form#sale_commission_agent_form')
             .submit(function (e) {
