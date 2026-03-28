@@ -162,7 +162,7 @@
                         <div class="col-sm-12 col-md-6" id="contact_dt_length"></div>
                         <div class="col-sm-12 col-md-6 text-md-end" id="contact_dt_filter"></div>
                     </div>
-                    <div class="table-responsive">
+                    {{-- Horizontal scroll: DataTables scrollX only — avoid .table-responsive (double/conflicting scroll) --}}
                         <table class="table table-bordered table-striped" id="contact_table">
                             <thead>
                                 <tr>
@@ -269,7 +269,6 @@
                                 </tr>
                             </tfoot>
                         </table>
-                    </div>
                     <div class="row align-items-center mt-2" id="contact_dt_bottom">
                         <div class="col-sm-12 col-md-5" id="contact_dt_info"></div>
                         <div class="col-sm-12 col-md-7 text-md-end" id="contact_dt_paginate"></div>
@@ -512,6 +511,15 @@
         #contact_table_wrapper {
             width: 100% !important;
             display: block !important;
+            overflow-x: visible !important;
+        }
+
+        #contact_table_wrapper .dataTables_scroll {
+            clear: both;
+        }
+
+        #contact_table_wrapper .dataTables_scrollBody {
+            overflow-x: auto !important;
         }
 
         #contact_table {

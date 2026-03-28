@@ -3,24 +3,21 @@
 
 @section('content')
     <style>
-        /* Force horizontal scrollbar visibility on sells table */
-        #sell_table_wrapper,
-        #sell_table_wrapper .dataTables_scroll,
-        #sell_table_wrapper .dataTables_scrollBody {
-            display: block !important;
+        /*
+         * One horizontal scrollbar only: DataTables .dataTables_scrollBody (under the header / with rows).
+         * Do NOT set overflow-x on #sell_table_wrapper or .table-responsive — that duplicates the bar below "No data..." / footer.
+         */
+        #sell_table_wrapper {
             width: 100% !important;
-            overflow-x: auto !important;
+            overflow-x: visible !important;
         }
 
-        #sell_table {
-            width: 100% !important;
-            margin: 0 !important;
-            display: table !important;
-        }
-
-        /* Ensure the DataTables scroll container allows the horizontal scrollbar to show */
         .dataTables_wrapper .dataTables_scroll {
             clear: both;
+        }
+
+        #sell_table_wrapper .dataTables_scrollBody {
+            overflow-x: auto !important;
         }
     </style>
     <div class="container-fluid">
@@ -86,7 +83,6 @@
                     @endcan
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
                         @php
                             $custom_labels = json_decode(session('business.custom_labels'), true);
                         @endphp
@@ -137,7 +133,6 @@
                                 </tr>
                             </tfoot>
                         </table>
-                    </div>
                 </div>
             </div>
         </div>
