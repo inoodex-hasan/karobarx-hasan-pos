@@ -2,14 +2,49 @@
 @section('title', __('sale.products'))
 
 @push('styles')
-@endpush
-
-@section('content')
     <style>
+        .dataTables_length label {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+            font-weight: 400 !important;
+            margin-bottom: 0 !important;
+            white-space: nowrap !important;
+        }
+
+        .dataTables_length select {
+            width: auto !important;
+            height: 30px !important;
+            padding: 0 10px !important;
+            margin: 0 !important;
+            font-size: 13px !important;
+            border-radius: 4px !important;
+            display: inline-block !important;
+        }
+
+        #product_table_wrapper {
+            width: 100% !important;
+            display: block !important;
+        }
+
+        #product_table {
+            width: 100% !important;
+        }
+
+        .dataTables_paginate {
+            display: flex !important;
+            justify-content: flex-end !important;
+            width: 100% !important;
+        }
+
+        .paging_simple_numbers {
+            margin-left: auto !important;
+        }
+
         /* Force visibility on this specific page */
-        .viho-template-active .card, 
-        .viho-template-active .card-body, 
-        .viho-template-active .tab-content, 
+        .viho-template-active .card,
+        .viho-template-active .card-body,
+        .viho-template-active .tab-content,
         .viho-template-active .tab-pane,
         .viho-template-active #product_table,
         .viho-template-active #product_table_wrapper {
@@ -45,31 +80,33 @@
             display: block !important;
         }
     </style>
-    <div class="container-fluid">
-        <div class="page-header">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h3>@lang('sale.products')
-                        <small
-                            class="tw-text-sm md:tw-text-base tw-text-gray-700 tw-font-semibold">@lang('lang_v1.manage_products')</small>
-                    </h3>
+@endpush
+@section('content')
+        <div class="container-fluid">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h3>@lang('sale.products')
+                            <small
+                                class="tw-text-sm md:tw-text-base tw-text-gray-700 tw-font-semibold">@lang('lang_v1.manage_products')</small>
+                        </h3>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5>@lang('report.filters')</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                {!! Form::label('type', __('product.product_type') . ':') !!}
-                                {!! Form::select(
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>@lang('report.filters')</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    {!! Form::label('type', __('product.product_type') . ':') !!}
+                                    {!! Form::select(
         'type',
         ['single' => __('lang_v1.single'), 'variable' => __('lang_v1.variable'), 'combo' => __('lang_v1.combo')],
         null,
@@ -80,68 +117,68 @@
             'placeholder' => __('lang_v1.all'),
         ],
     ) !!}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                {!! Form::label('category_id', __('product.category') . ':') !!}
-                                {!! Form::select('category_id', $categories, null, [
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    {!! Form::label('category_id', __('product.category') . ':') !!}
+                                    {!! Form::select('category_id', $categories, null, [
         'class' => 'form-control select2',
         'style' => 'width:100%',
         'id' => 'product_list_filter_category_id',
         'placeholder' => __('lang_v1.all'),
     ]) !!}
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                {!! Form::label('unit_id', __('product.unit') . ':') !!}
-                                {!! Form::select('unit_id', $units, null, [
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    {!! Form::label('unit_id', __('product.unit') . ':') !!}
+                                    {!! Form::select('unit_id', $units, null, [
         'class' => 'form-control select2',
         'style' => 'width:100%',
         'id' => 'product_list_filter_unit_id',
         'placeholder' => __('lang_v1.all'),
     ]) !!}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                {!! Form::label('tax_id', __('product.tax') . ':') !!}
-                                {!! Form::select('tax_id', $taxes, null, [
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    {!! Form::label('tax_id', __('product.tax') . ':') !!}
+                                    {!! Form::select('tax_id', $taxes, null, [
         'class' => 'form-control select2',
         'style' => 'width:100%',
         'id' => 'product_list_filter_tax_id',
         'placeholder' => __('lang_v1.all'),
     ]) !!}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                {!! Form::label('brand_id', __('product.brand') . ':') !!}
-                                {!! Form::select('brand_id', $brands, null, [
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    {!! Form::label('brand_id', __('product.brand') . ':') !!}
+                                    {!! Form::select('brand_id', $brands, null, [
         'class' => 'form-control select2',
         'style' => 'width:100%',
         'id' => 'product_list_filter_brand_id',
         'placeholder' => __('lang_v1.all'),
     ]) !!}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3" id="location_filter">
-                            <div class="form-group">
-                                {!! Form::label('location_id', __('purchase.business_location') . ':') !!}
-                                {!! Form::select('location_id', $business_locations, null, [
-                                    'class' => 'form-control select2',
-                                    'style' => 'width:100%',
-                                    'id' => 'location_id',
-                                    'placeholder' => __('lang_v1.all'),
-                                ]) !!}
+                            <div class="col-md-3" id="location_filter">
+                                <div class="form-group">
+                                    {!! Form::label('location_id', __('purchase.business_location') . ':') !!}
+                                    {!! Form::select('location_id', $business_locations, null, [
+        'class' => 'form-control select2',
+        'style' => 'width:100%',
+        'id' => 'location_id',
+        'placeholder' => __('lang_v1.all'),
+    ]) !!}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <br>
-                            <div class="form-group">
-                                {!! Form::select(
+                            <div class="col-md-3">
+                                <br>
+                                <div class="form-group">
+                                    {!! Form::select(
         'active_state',
         ['active' => __('business.is_active'), 'inactive' => __('lang_v1.inactive')],
         null,
@@ -152,131 +189,132 @@
             'placeholder' => __('lang_v1.all'),
         ],
     ) !!}
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- include module filter -->
-                        @if (!empty($pos_module_data))
-                            @foreach ($pos_module_data as $key => $value)
-                                @if (!empty($value['view_path']))
-                                    @includeIf($value['view_path'], ['view_data' => $value['view_data']])
-                                @endif
-                            @endforeach
-                        @endif
+                            <!-- include module filter -->
+                            @if (!empty($pos_module_data))
+                                @foreach ($pos_module_data as $key => $value)
+                                    @if (!empty($value['view_path']))
+                                        @includeIf($value['view_path'], ['view_data' => $value['view_data']])
+                                    @endif
+                                @endforeach
+                            @endif
 
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <br>
-                                <label>
-                                    {!! Form::checkbox('not_for_selling', 1, false, ['class' => 'input-icheck', 'id' => 'not_for_selling']) !!}
-                                    <strong>@lang('lang_v1.not_for_selling')</strong>
-                                </label>
-                            </div>
-                        </div>
-                        @if ($is_woocommerce)
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <br>
                                     <label>
-                                        {!! Form::checkbox('woocommerce_enabled', 1, false, ['class' => 'input-icheck', 'id' => 'woocommerce_enabled']) !!}
-                                        {{ __('lang_v1.woocommerce_enabled') }}
+                                        {!! Form::checkbox('not_for_selling', 1, false, ['class' => 'input-icheck', 'id' => 'not_for_selling']) !!}
+                                        <strong>@lang('lang_v1.not_for_selling')</strong>
                                     </label>
                                 </div>
                             </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @can('product.view')
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header pb-0">
-                        <ul class="nav nav-tabs nav-primary" id="product_tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="product_list_tab_link" data-bs-toggle="tab"
-                                    href="#product_list_tab" role="tab" aria-controls="product_list_tab" aria-selected="true">
-                                    <i class="fa fa-cubes"></i> @lang('lang_v1.all_products')
-                                </a>
-                            </li>
-                            @can('stock_report.view')
-                                <li class="nav-item">
-                                    <a class="nav-link" id="product_stock_report_link" data-bs-toggle="tab"
-                                        href="#product_stock_report" role="tab" aria-controls="product_stock_report"
-                                        aria-selected="false">
-                                        <i class="fa fa-hourglass-half"></i> @lang('report.stock_report')
-                                    </a>
-                                </li>
-                            @endcan
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <div class="tab-content" id="product_tabs_content">
-                            <div class="tab-pane fade show active" id="product_list_tab" role="tabpanel"
-                                aria-labelledby="product_list_tab_link">
-                                @can('product.create')
-                                    <div class="mb-3 d-flex justify-content-end gap-2">
-                                        @if ($is_admin)
-                                            <a class="btn btn-info btn-sm"
-                                                href="{{ action([\App\Http\Controllers\ProductController::class, 'downloadExcel']) }}">
-                                                <i class="fa fa-download"></i> @lang('lang_v1.download_excel')
-                                            </a>
-                                        @endif
-                                        <a class="btn btn-primary btn-sm"
-                                            href="{{ action([\App\Http\Controllers\ProductController::class, 'create']) }}">
-                                            <i class="fa fa-plus"></i> @lang('messages.add')
-                                        </a>
-                                    </div>
-                                @endcan
-                                <div class="row align-items-center mb-2" id="product_dt_top">
-                                    <div class="col-sm-12 col-md-6" id="product_dt_length"></div>
-                                    <div class="col-sm-12 col-md-6 text-md-end" id="product_dt_filter"></div>
-                                </div>
-                                @include('templates.viho.product.partials.product_list')
-                                <div class="row align-items-center mt-2" id="product_dt_bottom">
-                                    <div class="col-sm-12 col-md-5" id="product_dt_info"></div>
-                                    <div class="col-sm-12 col-md-7 text-md-end" id="product_dt_paginate"></div>
-                                </div>
-                            </div>
-                            @can('stock_report.view')
-                                <div class="tab-pane fade" id="product_stock_report" role="tabpanel"
-                                    aria-labelledby="product_stock_report_link">
-                                    <div class="row align-items-center mb-2" id="stock_report_dt_top">
-                                        <div class="col-sm-12 col-md-6" id="stock_report_dt_length"></div>
-                                        <div class="col-sm-12 col-md-6 text-md-end" id="stock_report_dt_filter"></div>
-                                    </div>
-                                    @include('templates.viho.report.partials.stock_report_table')
-                                    <div class="row align-items-center mt-2" id="stock_report_dt_bottom">
-                                        <div class="col-sm-12 col-md-5" id="stock_report_dt_info"></div>
-                                        <div class="col-sm-12 col-md-7 text-md-end" id="stock_report_dt_paginate"></div>
+                            @if ($is_woocommerce)
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <br>
+                                        <label>
+                                            {!! Form::checkbox('woocommerce_enabled', 1, false, ['class' => 'input-icheck', 'id' => 'woocommerce_enabled']) !!}
+                                            {{ __('lang_v1.woocommerce_enabled') }}
+                                        </label>
                                     </div>
                                 </div>
-                            @endcan
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    @endcan
 
-    <input type="hidden" id="is_rack_enabled" value="{{ $rack_enabled }}">
+        @can('product.view')
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header pb-0">
+                            <ul class="nav nav-tabs nav-primary" id="product_tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="product_list_tab_link" data-bs-toggle="tab"
+                                        href="#product_list_tab" role="tab" aria-controls="product_list_tab" aria-selected="true">
+                                        <i class="fa fa-cubes"></i> @lang('lang_v1.all_products')
+                                    </a>
+                                </li>
+                                @can('stock_report.view')
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="product_stock_report_link" data-bs-toggle="tab"
+                                            href="#product_stock_report" role="tab" aria-controls="product_stock_report"
+                                            aria-selected="false">
+                                            <i class="fa fa-hourglass-half"></i> @lang('report.stock_report')
+                                        </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content" id="product_tabs_content">
+                                <div class="tab-pane fade show active" id="product_list_tab" role="tabpanel"
+                                    aria-labelledby="product_list_tab_link">
+                                    @can('product.create')
+                                        <div class="mb-3 d-flex justify-content-end gap-2">
+                                            @if ($is_admin)
+                                                <a class="btn btn-info btn-sm"
+                                                    href="{{ action([\App\Http\Controllers\ProductController::class, 'downloadExcel']) }}">
+                                                    <i class="fa fa-download"></i> @lang('lang_v1.download_excel')
+                                                </a>
+                                            @endif
+                                            <a class="btn btn-primary btn-sm"
+                                                href="{{ action([\App\Http\Controllers\ProductController::class, 'create']) }}">
+                                                <i class="fa fa-plus"></i> @lang('messages.add')
+                                            </a>
+                                        </div>
+                                    @endcan
+                                    <div class="row align-items-center mb-2" id="product_dt_top">
+                                        <div class="col-sm-12 col-md-3" id="product_dt_length"></div>
+                                                <div class="col-sm-12 col-md-6 text-center" id="product_dt_buttons"></div>
+                                                <div class="col-sm-12 col-md-3 text-md-end" id="product_dt_filter"></div>
+                                            </div>
+                                            @include('templates.viho.product.partials.product_list')
+                                            <div class="row align-items-center mt-2" id="product_dt_bottom">
+                                                <div class="col-sm-12 col-md-5" id="product_dt_info"></div>
+                                                <div class="col-sm-12 col-md-7 text-md-end" id="product_dt_paginate"></div>
+                                            </div>
+                                        </div>
+                                        @can('stock_report.view')
+                                            <div class="tab-pane fade" id="product_stock_report" role="tabpanel"
+                                                aria-labelledby="product_stock_report_link">
+                                                <div class="row align-items-center mb-2" id="stock_report_dt_top">
+                                                    <div class="col-sm-12 col-md-6" id="stock_report_dt_length"></div>
+                                                    <div class="col-sm-12 col-md-6 text-md-end" id="stock_report_dt_filter"></div>
+                                                </div>
+                                                @include('templates.viho.report.partials.stock_report_table')
+                                                <div class="row align-items-center mt-2" id="stock_report_dt_bottom">
+                                                    <div class="col-sm-12 col-md-5" id="stock_report_dt_info"></div>
+                                                    <div class="col-sm-12 col-md-7 text-md-end" id="stock_report_dt_paginate"></div>
+                                                </div>
+                                            </div>
+                                        @endcan
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        @endcan
 
-    <div class="modal fade product_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
-    </div>
+            <input type="hidden" id="is_rack_enabled" value="{{ $rack_enabled }}">
 
-    <div class="modal" id="view_product_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
-    </div>
+            <div class="modal fade product_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+            </div>
 
-    <div class="modal fade" id="opening_stock_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
-    </div>
+            <div class="modal" id="view_product_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+            </div>
 
-    @if ($is_woocommerce)
-        @include('product.partials.toggle_woocommerce_sync_modal')
-    @endif
-    @include('product.partials.edit_product_location_modal')
+            <div class="modal fade" id="opening_stock_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+            </div>
+
+            @if ($is_woocommerce)
+                @include('product.partials.toggle_woocommerce_sync_modal')
+            @endif
+            @include('product.partials.edit_product_location_modal')
 
 @endsection
 
@@ -309,7 +347,39 @@
                     [3, 'asc']
                 ],
                 autoWidth: false,
-                dom: "<'row align-items-center mb-3'<'col-sm-12 col-md-2'l><'col-sm-12 col-md-8 text-center'B><'col-sm-12 col-md-2 text-md-end'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 text-md-end'p>>",
+                pageLength: 25,
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, 'All']
+                ],
+                dom: "<'row align-items-center mb-3'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-6 text-center'B><'col-sm-12 col-md-3 text-md-end'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 text-md-end'p>>",
+                buttons: [
+                    {
+                        extend: 'csv',
+                        className: 'btn btn-outline-primary btn-xs',
+                        text: '<i class="fa fa-file-csv" aria-hidden="true"></i> Export CSV'
+                    },
+                    {
+                        extend: 'excel',
+                        className: 'btn btn-outline-primary btn-xs',
+                        text: '<i class="fa fa-file-excel" aria-hidden="true"></i> Export Excel'
+                    },
+                    {
+                        extend: 'print',
+                        className: 'btn btn-outline-primary btn-xs',
+                        text: '<i class="fa fa-print" aria-hidden="true"></i> Print'
+                    },
+                    {
+                        extend: 'colvis',
+                        className: 'btn btn-outline-primary btn-xs',
+                        text: '<i class="fa fa-columns" aria-hidden="true"></i> Column visibility'
+                    },
+                    {
+                        extend: 'pdf',
+                        className: 'btn btn-outline-primary btn-xs',
+                        text: '<i class="fa fa-file-pdf" aria-hidden="true"></i> Export PDF'
+                    }
+                ],
                 "ajax": {
                     "url": products_ajax_url,
                     "data": function (d) {
@@ -362,14 +432,14 @@
                     orderable: false
                 },
                     @can('view_purchase_price')
-                                                {
+                                                                                    {
                             data: 'purchase_price',
                             name: 'max_purchase_price',
                             searchable: false
                         },
                     @endcan
                 @can('access_default_selling_price')
-                                        {
+                                                                {
                         data: 'selling_price',
                         name: 'max_price',
                         searchable: false
@@ -449,6 +519,30 @@
                 },
                 fnDrawCallback: function (oSettings) {
                     __currency_convert_recursively($('#product_table'));
+                },
+                initComplete: function () {
+                    var relocate = function () {
+                        var $wrapper = $('#product_table_wrapper');
+                        if ($wrapper.length < 1) return;
+
+                        var $length = $wrapper.find('.dataTables_length');
+                        var $buttons = $wrapper.find('.dt-buttons');
+                        var $filter = $wrapper.find('.dataTables_filter');
+                        var $info = $wrapper.find('.dataTables_info');
+                        var $paginate = $wrapper.find('.dataTables_paginate');
+
+                        if ($length.length) $('#product_dt_length').empty().append($length);
+                        if ($buttons.length) $('#product_dt_buttons').empty().append($buttons);
+                        if ($filter.length) $('#product_dt_filter').empty().append($filter);
+                        if ($info.length) $('#product_dt_info').empty().append($info);
+                        if ($paginate.length) $('#product_dt_paginate').empty().append($paginate);
+                    };
+
+                    relocate();
+                    var api = this.api();
+                    api.on('draw.dt', function () {
+                        relocate();
+                    });
                 }
             });
 
@@ -694,46 +788,46 @@
                         });
                     });
             @endif
-                });
-
-            $(document)
-                .off('shown.bs.modal.vihoProducts', 'div.view_product_modal, div.view_modal, #view_product_modal')
-                .on('shown.bs.modal.vihoProducts', 'div.view_product_modal, div.view_modal, #view_product_modal',
-                    function () {
-                        var div = $(this).find('#view_product_stock_details');
-                        if (div.length) {
-                            $.ajax({
-                                url: "{{ action([\App\Http\Controllers\ReportController::class, 'getStockReport']) }}" +
-                                    '?for=view_product&product_id=' + div.data('product_id'),
-                                dataType: 'html',
-                                success: function (result) {
-                                    div.html(result);
-                                    if (typeof __currency_convert_recursively === 'function') {
-                                        __currency_convert_recursively(div);
-                                    }
-                                },
                             });
-                        }
-                        if (typeof __currency_convert_recursively === 'function') {
-                            __currency_convert_recursively($(this));
-                        }
-                    });
 
-            $(document).on('click', 'a.view-product', function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: $(this).attr('href'),
-                    dataType: 'html',
-                    success: function(result) {
-                        $('#view_product_modal')
-                            .html(result)
-                            .modal('show');
-                        if (typeof __currency_convert_recursively === 'function') {
-                            __currency_convert_recursively($('#view_product_modal'));
-                        }
-                    },
+        $(document)
+            .off('shown.bs.modal.vihoProducts', 'div.view_product_modal, div.view_modal, #view_product_modal')
+            .on('shown.bs.modal.vihoProducts', 'div.view_product_modal, div.view_modal, #view_product_modal',
+                function () {
+                    var div = $(this).find('#view_product_stock_details');
+                    if (div.length) {
+                        $.ajax({
+                            url: "{{ action([\App\Http\Controllers\ReportController::class, 'getStockReport']) }}" +
+                                '?for=view_product&product_id=' + div.data('product_id'),
+                            dataType: 'html',
+                            success: function (result) {
+                                div.html(result);
+                                if (typeof __currency_convert_recursively === 'function') {
+                                    __currency_convert_recursively(div);
+                                }
+                            },
+                        });
+                    }
+                    if (typeof __currency_convert_recursively === 'function') {
+                        __currency_convert_recursively($(this));
+                    }
                 });
+
+        $(document).on('click', 'a.view-product', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: $(this).attr('href'),
+                dataType: 'html',
+                success: function (result) {
+                    $('#view_product_modal')
+                        .html(result)
+                        .modal('show');
+                    if (typeof __currency_convert_recursively === 'function') {
+                        __currency_convert_recursively($('#view_product_modal'));
+                    }
+                },
             });
+        });
 
         var data_table_initailized = false;
         $('a[data-bs-toggle="tab"]')
