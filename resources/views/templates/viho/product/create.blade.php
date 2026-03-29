@@ -46,7 +46,7 @@
                 {!! Form::label('unit_id', __('product.unit') . ':*') !!}
                 <div class="input-group">
                     {!! Form::select('unit_id', $units, !empty($duplicate_product->unit_id) ? $duplicate_product->unit_id : session('business.default_unit'), ['class' => 'form-control select2', 'required']); !!}
-                    <span class="input-group-btn">
+                    <span class="input-group-append">
                         <button type="button" @if(!auth()->user()->can('unit.create')) disabled @endif class="btn btn-default bg-white btn-flat btn-modal" data-href="{{action([\App\Http\Controllers\UnitController::class, 'create'], ['quick_add' => true])}}" title="@lang('unit.add_unit')" data-container=".view_modal"><i class="fa fa-plus-circle text-primary fa-lg"></i></button>
                     </span>
                 </div>
@@ -74,7 +74,7 @@
                 {!! Form::label('brand_id', __('product.brand') . ':') !!}
                 <div class="input-group">
                     {!! Form::select('brand_id', $brands, !empty($duplicate_product->brand_id) ? $duplicate_product->brand_id : null, ['placeholder' => __('messages.please_select'), 'class' => 'form-control select2']); !!}
-                    <span class="input-group-btn">
+                    <span class="input-group-append">
                         <button type="button" @if(!auth()->user()->can('brand.create')) disabled @endif class="btn btn-default bg-white btn-flat btn-modal" data-href="{{action([\App\Http\Controllers\BrandController::class, 'create'], ['quick_add' => true])}}" title="@lang('brand.add_brand')" data-container=".view_modal"><i class="fa fa-plus-circle text-primary fa-lg"></i></button>
                     </span>
                 </div>
@@ -147,37 +147,38 @@
                 <div class="row">
                     <div class="col-sm-8 product-description-label">
                         {!! Form::label('product_description', __('lang_v1.product_description') . ':') !!}
-                    </div> 
+                    </div>
                 </div>
                 {!! Form::textarea('product_description', !empty($duplicate_product->product_description) ? $duplicate_product->product_description : null, ['class' => 'form-control']); !!}
             </div>
         </div>
         <div class="col-sm-4">
             <div class="form-group">
-               
                 <div class="row">
                     <div class="col-sm-6 image-label">
-                    {!! Form::label('image', __('lang_v1.product_image') . ':') !!}
-                    </div> 
+                        {!! Form::label('image', __('lang_v1.product_image') . ':') !!}
+                    </div>
                 </div>
-                {!! Form::file('image', ['id' => 'upload_image', 'accept' => 'image/*',
-                'required' => $is_image_required, 'class' => 'upload-element']); !!}
+                <div class="image-file-input-wrapper">
+                    {!! Form::file('image', ['id' => 'upload_image', 'accept' => 'image/*',
+                    'required' => $is_image_required, 'class' => 'form-control upload-element']); !!}
+                </div>
                 <small>
                     <p class="help-block">@lang('purchase.max_file_size', ['size' => (config('constants.document_size_limit') / 1000000)]) <br> @lang('lang_v1.aspect_ratio_should_be_1_1')</p>
                 </small>
             </div>
         </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="form-group">
-            {!! Form::label('product_brochure', __('lang_v1.product_brochure') . ':') !!}
-            {!! Form::file('product_brochure', ['id' => 'product_brochure', 'accept' => implode(',', array_keys(config('constants.document_upload_mimes_types')))]); !!}
-            <small>
-                <p class="help-block">
-                    @lang('purchase.max_file_size', ['size' => (config('constants.document_size_limit') / 1000000)])
-                    @includeIf('components.document_help_text')
-                </p>
-            </small>
+        <div class="col-sm-4">
+            <div class="form-group">
+                {!! Form::label('product_brochure', __('lang_v1.product_brochure') . ':') !!}
+                {!! Form::file('product_brochure', ['id' => 'product_brochure', 'accept' => implode(',', array_keys(config('constants.document_upload_mimes_types'))), 'class' => 'form-control']); !!}
+                <small>
+                    <p class="help-block">
+                        @lang('purchase.max_file_size', ['size' => (config('constants.document_size_limit') / 1000000)])
+                        @includeIf('components.document_help_text')
+                    </p>
+                </small>
+            </div>
         </div>
     </div>
     @endcomponent

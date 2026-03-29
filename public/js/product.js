@@ -586,6 +586,7 @@ $(document).ready(function() {
         previewSettings: {
             image: { width: 'auto', height: 'auto', 'max-width': '100%', 'max-height': '100%' },
         },
+        mainClass: 'product-image-fileinput',
     };
     $('#upload_image').fileinput(img_fileinput_setting);
 

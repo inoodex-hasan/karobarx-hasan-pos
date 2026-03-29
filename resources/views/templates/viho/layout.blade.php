@@ -165,12 +165,15 @@
         .dataTables_wrapper table.dataTable {
             width: 100% !important;
         }
+
         .dataTables_wrapper table.dataTable tbody tr {
             display: table-row !important;
         }
+
         .dataTables_wrapper table.dataTable tbody td {
             display: table-cell !important;
         }
+
         .dataTables_wrapper {
             width: 100% !important;
             display: block !important;
@@ -211,6 +214,7 @@
         .page-main-header {
             overflow: visible !important;
         }
+
         .page-main-header .main-header-right {
             width: 100%;
         }
@@ -226,7 +230,9 @@
         }
 
         /* Map fas/far/fab to FontAwesome for FA4 compatibility */
-        .fas, .far, .fab {
+        .fas,
+        .far,
+        .fab {
             font-family: FontAwesome !important;
             font-weight: normal;
             font-style: normal;
@@ -238,26 +244,33 @@
                 width: 240px !important;
                 min-width: 240px !important;
             }
+
             .viho-template-active .page-wrapper.compact-wrapper .page-body-wrapper .page-body {
                 margin-left: 240px !important;
             }
+
             .viho-template-active .page-main-header .main-header-right .main-header-left {
                 width: 240px !important;
             }
+
             .viho-template-active .page-main-header .main-header-right .nav-right {
                 padding-left: 10px !important;
             }
+
             .viho-template-active .default-header-embedded a.tw-inline-flex {
                 padding: 0.375rem 0.5rem !important;
                 font-size: 0.75rem !important;
             }
+
             .viho-template-active .default-header-embedded svg {
                 width: 1.25rem !important;
                 height: 1.25rem !important;
             }
+
             .viho-template-active .page-main-header .main-header-right .left-menu-header {
                 max-width: 150px !important;
             }
+
             .viho-template-active .container-fluid {
                 padding-left: 10px !important;
                 padding-right: 10px !important;
@@ -269,23 +282,29 @@
                 width: 70px !important;
                 min-width: 70px !important;
             }
+
             .viho-template-active .page-wrapper.compact-wrapper .page-body-wrapper header.main-nav .main-navbar .nav-menu span {
                 display: none !important;
             }
+
             .viho-template-active .page-wrapper.compact-wrapper .page-body-wrapper .page-body {
                 margin-left: 70px !important;
             }
+
             .viho-template-active .page-main-header .main-header-right .main-header-left {
                 width: 70px !important;
             }
+
             .viho-template-active .logo-wrapper img {
                 display: none !important;
             }
+
             .viho-template-active .main-nav .sidebar-user img {
                 width: 40px !important;
                 height: 40px !important;
             }
-            .viho-template-active .main-nav .sidebar-user h6, 
+
+            .viho-template-active .main-nav .sidebar-user h6,
             .viho-template-active .main-nav .sidebar-user p {
                 display: none !important;
             }
@@ -298,9 +317,17 @@
         }
 
         /* Bootstrap 3 Offset Shims */
-        .col-md-offset-4 { margin-left: 33.33333333%; }
-        .col-sm-offset-1 { margin-left: 8.33333333%; }
-        .col-md-offset-8 { margin-left: 66.66666667%; }
+        .col-md-offset-4 {
+            margin-left: 33.33333333%;
+        }
+
+        .col-sm-offset-1 {
+            margin-left: 8.33333333%;
+        }
+
+        .col-md-offset-8 {
+            margin-left: 66.66666667%;
+        }
 
         /* Bootstrap 3 compatibility: many migrated views still use `.input-group-addon` */
         .input-group {
@@ -357,17 +384,87 @@
 
         /* Fix button alignment in input groups */
         .input-group-btn {
-            display: flex;
+            position: relative;
+            display: table-cell;
+            vertical-align: middle;
         }
 
         .input-group-btn .btn {
             border-radius: 0;
             margin: 0;
+            border-color: #e6edef;
+        }
+
+        .input-group-btn:first-child .btn {
+            border-top-left-radius: 0.25rem;
+            border-bottom-left-radius: 0.25rem;
+            margin-right: -1px;
         }
 
         .input-group-btn:last-child .btn {
             border-top-right-radius: 0.25rem;
             border-bottom-right-radius: 0.25rem;
+            margin-left: -1px;
+        }
+
+        /* Fix file input styling */
+        .theme-form .form-group input[type=file] {
+            padding: 7px 10px;
+            height: 46px;
+            border: 1px solid #e6edef;
+            background-color: #fff;
+            color: #898989;
+        }
+
+        .theme-form .form-group input[type=file]::-webkit-file-upload-button {
+            background: #f8f9fa;
+            border: 1px solid #e6edef;
+            padding: 5px 15px;
+            margin-right: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .theme-form .form-group input[type=file]::-webkit-file-upload-button:hover {
+            background: #e9ecef;
+        }
+
+        /* Fix product image field width */
+        .image-file-input-wrapper {
+            width: 70% !important;
+            max-width: 70% !important;
+        }
+
+        .image-file-input-wrapper .file-input,
+        .product-image-fileinput {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        .product-image-fileinput .file-caption {
+            width: calc(100% - 120px) !important;
+        }
+
+        .product-image-fileinput .file-actions,
+        .product-image-fileinput .file-preview {
+            max-width: 100%;
+        }
+
+        /* Laptop and smaller screens */
+        @media (max-width: 1366px) {
+            .image-file-input-wrapper {
+                width: 65% !important;
+                max-width: 65% !important;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .image-file-input-wrapper {
+                width: 60% !important;
+                max-width: 60% !important;
+            }
         }
 
         /* Better well styling */
@@ -378,7 +475,7 @@
             background-color: #f5f5f5;
             border: 1px solid #e3e3e3;
             border-radius: 4px;
-            box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
         }
     </style>
 
@@ -443,8 +540,7 @@
             <header class="main-nav">
                 <div class="sidebar-user text-center">
                     <a class="setting-primary" href="javascript:void(0)"><i data-feather="settings"></i></a>
-                    <img class="img-90 rounded-circle" src="{{ $viho_asset }}/images/dashboard/1.png"
-                        alt="">
+                    <img class="img-90 rounded-circle" src="{{ $viho_asset }}/images/dashboard/1.png" alt="">
                     {{-- <div class="badge-bottom"><span class="badge badge-primary">New</span></div> --}}
                     <a href="javascript:void(0)">
                         <h6 class="mt-3 f-14 f-w-600">{{ Auth::user()->first_name ?? 'User' }}</h6>
@@ -494,10 +590,10 @@
     <script src="{{ $viho_asset }}/js/script.js"></script>
 
     <script>
-        (function() {
+        (function () {
             if (typeof window.jQuery === 'undefined') return;
             var $ = window.jQuery;
-            $(function() {
+            $(function () {
                 // Use Viho-like DataTables layout (length left, buttons center, search right; info left, paginate right).
                 if ($.fn && $.fn.dataTable && $.fn.dataTable.defaults) {
                     $.extend($.fn.dataTable.defaults, {
@@ -514,14 +610,14 @@
                     $('.dropdown-toggle[data-toggle="dropdown"]').dropdown();
                 }
 
-                $(document).on('click', '#mainnav .nav-menu > li.dropdown > a.menu-title', function(e) {
+                $(document).on('click', '#mainnav .nav-menu > li.dropdown > a.menu-title', function (e) {
                     e.preventDefault();
                     var $parent = $(this).closest('li.dropdown');
                     var $submenu = $parent.children('ul.nav-submenu');
 
                     $parent.siblings('li.dropdown').removeClass('open').children(
                         'ul.nav-submenu:visible').slideUp(
-                        150);
+                            150);
                     $parent.toggleClass('open');
                     $submenu.stop(true, true).slideToggle(150);
                 });
